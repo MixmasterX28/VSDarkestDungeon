@@ -4,18 +4,30 @@ using UnityEngine;
 
 public class TriggerDamageScript : MonoBehaviour
 {
-    [SerializeField] private DamageSystem damageSystem; // Reference to the DamageSystem script
+    [SerializeField] private MouseClick mouseClickScript;
 
-    public void OnButtonPress()
+    private bool isActivated = false;
+
+    public void ToggleMouseClick()
     {
-        if (damageSystem != null)
+        if (mouseClickScript != null)
         {
-            damageSystem.TriggerDamage();
-            Debug.Log("Button pressed");
+            if (!isActivated)
+            {
+                mouseClickScript.enabled = true; // Activate the MouseClick script
+                isActivated = true;
+                Debug.Log("MouseClick script activated.");
+            }
+            else
+            {
+                mouseClickScript.enabled = false; // Deactivate the MouseClick script
+                isActivated = false;
+                Debug.Log("MouseClick script deactivated.");
+            }
         }
         else
         {
-            Debug.LogError("DamageSystem reference not set in TriggerDamageScript!");
+            Debug.LogError("MouseClick script reference is missing.");
         }
     }
 }

@@ -16,12 +16,4 @@ public class HPSystem : MonoBehaviour
             Destroy(gameObject);  // Destroys the object when HP reaches 0
             HP = 0;
     }
-
-    public void Damage()
-    {
-        damage = Random.Range(1,9);
-
-        HP -= damage;
-        Debug.Log(HP);
-    }
 }

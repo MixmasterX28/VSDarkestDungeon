@@ -4,28 +4,17 @@ using UnityEngine;
 
 public class DamageSystem : MonoBehaviour
 {
-    private List<HPSystem> characterHP;
+    private HPSystem health;
+    private int damage;
 
     private void Start()
     {
-        characterHP = new List<HPSystem>();
-
-        // Find all objects in the scene that have a component implementing HPSystem
-        foreach (var character in FindObjectsOfType<MonoBehaviour>())
-        {
-            if (character is HPSystem hpSystem)
-            {
-                characterHP.Add(hpSystem);
-            }
-        }
+        health = GetComponent<HPSystem>();
     }
 
-    public void TriggerDamage()
+    public void Damage()
     {
-        foreach (HPSystem v in characterHP)
-        {
-            v.Damage();
-        }
+        damage = Random.Range(1, 9);
+        health.hp -= damage; 
     }
-
 }
