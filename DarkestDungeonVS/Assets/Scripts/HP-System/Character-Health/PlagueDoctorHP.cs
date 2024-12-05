@@ -6,9 +6,9 @@ public class PlagueDoctorHP : HPSystem
 {
     void Start()
     {
-        Subscribe();
         hp = 22;
     }
+
 
     void Update()
     {
@@ -16,6 +16,5 @@ public class PlagueDoctorHP : HPSystem
         {
             Die();
         }
-        Debug.Log(hp);
     }
 }

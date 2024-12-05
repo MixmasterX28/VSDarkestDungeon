@@ -6,9 +6,10 @@ public class HighwayManHealth : HPSystem
 {
     void Start()
     {
-        Subscribe();
         hp = 23;
     }
+
+
 
     void Update()
     {
@@ -16,6 +17,5 @@ public class HighwayManHealth : HPSystem
         {
             Die();
         }
-        Debug.Log(hp);
     }
 }

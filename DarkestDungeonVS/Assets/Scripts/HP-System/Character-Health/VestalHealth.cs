@@ -6,9 +6,11 @@ public class VestalHealth : HPSystem
 {
     void Start()
     {
-        Subscribe();
         hp = 24;
     }
+
+
+
 
     void Update()
     {
@@ -16,6 +18,5 @@ public class VestalHealth : HPSystem
         {
             Die();
         }
-        Debug.Log(hp);
     }
 }

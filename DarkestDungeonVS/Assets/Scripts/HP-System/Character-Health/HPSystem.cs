@@ -2,17 +2,13 @@ using UnityEngine;
 
 public class HPSystem : MonoBehaviour 
 {
+    private int damage;
     private float HP;
   
     public float hp
     {
         get { return HP; }
         set { HP = value; }
-    }
-
-    public void Subscribe()
-    {
-        TestButton.HitTest += Damage;  // Subscribes to the event
     }
 
     public void Die()
@@ -22,7 +18,10 @@ public class HPSystem : MonoBehaviour
     }
 
     public void Damage()
-    { 
-        HP -= 7;
+    {
+        damage = Random.Range(1,9);
+
+        HP -= damage;
+        Debug.Log(HP);
     }
 }
