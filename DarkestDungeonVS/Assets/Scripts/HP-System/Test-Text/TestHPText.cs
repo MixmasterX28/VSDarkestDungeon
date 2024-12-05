@@ -5,7 +5,6 @@ public class TestHPText : MonoBehaviour
 {
     private HPSystem Health;  // References to the HPSystem component
     private TMP_Text TextField;  // References to the TMP_Text component
-
     public HPSystem health
     {
         get { return Health; }
@@ -17,7 +16,6 @@ public class TestHPText : MonoBehaviour
         get { return TextField; }
         set { TextField = value; }
     }
-
 
     public void HealthCheck() // Makes sure the HP won't go below 0
     {

@@ -1,16 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 public class CrusaderText : TestHPText
 {
-    
     // Start is called before the first frame update
     void Start()
     {
-
         // Ensures health is set up properly.
         if (health == null)
         {

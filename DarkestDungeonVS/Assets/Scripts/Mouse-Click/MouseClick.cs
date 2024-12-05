@@ -1,17 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseClick : MonoBehaviour
 {
-    [SerializeField] private DamageSystem damageSystem; // Reference to the DamageSystem script
-
+    [SerializeField] private DamageSystem damageSystem;
     private enum State { Deactive, Active }
     private State myState = State.Deactive;
 
+    public System.Action OnMouseClickUsed; // Event to notify when the script is used
+
     private void Start()
     {
-            damageSystem = GetComponent<DamageSystem>(); // Try to find the DamageSystem component on the same GameObject
+        if (damageSystem == null)
+        {
+            damageSystem = GetComponent<DamageSystem>();
+        }
     }
 
     private void Update()
@@ -26,7 +28,13 @@ public class MouseClick : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                damageSystem.Damage();
+                if (damageSystem != null)
+                {
+                    damageSystem.Damage();
+                    this.enabled = false; // Deactivate the script after use
+                    OnMouseClickUsed?.Invoke(); // Notify that the script was used
+                    Debug.Log("MouseClick script deactivated after use.");
+                }
             }
         }
     }
