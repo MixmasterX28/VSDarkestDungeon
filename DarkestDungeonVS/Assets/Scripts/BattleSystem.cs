@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public enum BattleState { START, ALLY1, ALLY2, ALLY3, ALLY4, ENEMY1, ENEMY2, ENEMY3, WIN, LOSE };
@@ -27,9 +29,49 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.START;
         Debug.Log("Battle START!");
         SpawnPrefabs();
-        TurnStart(0);
     }
 
+    private void Update()
+    {
+        Turn1(0);
+        Turn2(1);
+        Turn3(2);
+
+       /* if(Input.GetKeyDown(KeyCode.Space))
+        {
+            state = BattleState.ENEMY2;
+        }
+        else if (Input.GetKeyDown(KeyCode.P)) { state = BattleState.ALLY1; } */
+
+        switch (state)
+        {
+            case BattleState.START:
+                state = BattleState.ALLY1;
+                break;
+            case BattleState.ALLY1:
+                state = BattleState.ALLY2;
+                break;
+            case BattleState.ALLY2:
+                //state = BattleState.ALLY3;  
+                break;
+            case BattleState.ALLY3:
+                break;
+            case BattleState.ALLY4:
+                break;
+            case BattleState.ENEMY1:
+                break;
+            case BattleState.ENEMY2:
+                break;
+            case BattleState.ENEMY3:
+                break;
+            case BattleState.WIN:
+                break;
+            case BattleState.LOSE:
+                break;
+            default:
+                break;
+        }
+    }
     void SpawnPrefabs()
     {
         //zorgt ervoor dat de loop geen error geeft als de lists niet even groot zijn
@@ -67,24 +109,44 @@ public class BattleSystem : MonoBehaviour
             }
         }
     }
-    void TurnStart(int index)
+    void Turn1(int index)
     {
-        state = BattleState.ALLY1;
-
-        if(state == BattleState.ALLY1 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        if(state == BattleState.ALLY4 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
         {
             GameObject changeInstantie = InstantiatedAllies[index];
             changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
         }
-
-       // if (index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-       //{
-         //   GameObject changeInstantie = InstantiatedAllies[index];
-         //  changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
-        //}
-
-        //Ally1Turn.transform.localScale= new Vector2(1.2f,1.2f);
- 
-        
+        else
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
+        }
     }    
+
+    void Turn2(int index)
+    {
+        if (state == BattleState.ENEMY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
+        }
+        else
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
+    void Turn3(int index)
+    {
+        if (state == BattleState.ALLY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
+        }
+        else
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
 }
