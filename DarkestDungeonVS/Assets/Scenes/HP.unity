@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 445205906}
   m_Layer: 0
   m_Name: PlagueDoctor Test
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -923,7 +923,7 @@ GameObject:
   - component: {fileID: 790002092}
   m_Layer: 0
   m_Name: 'HighwayMan Test '
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1128,7 +1128,7 @@ GameObject:
   - component: {fileID: 953494140}
   m_Layer: 0
   m_Name: Crusader Test
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1606,11 +1606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b1fc00e182080f4cae15803fd8eabcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseClickScripts:
-  - {fileID: 953494140}
-  - {fileID: 1780517946}
-  - {fileID: 790002092}
-  - {fileID: 445205906}
+  mouseClickScripts: []
 --- !u!1 &1780517938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,7 +1623,7 @@ GameObject:
   - component: {fileID: 1780517946}
   m_Layer: 0
   m_Name: 'Vestal Test '
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
