@@ -1,25 +1,34 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class TriggerDamageScript : MonoBehaviour
 {
-    [SerializeField] private List<MouseClick> mouseClickScripts; // List of MouseClick scripts
+    [SerializeField] private List<MouseClick> mouseClickScripts = new List<MouseClick>(); // Initialize the list
+    private GameObject[] Units;
 
     private void Start()
     {
-        if (mouseClickScripts != null && mouseClickScripts.Count > 0)
+        Units = GameObject.FindGameObjectsWithTag("Unit");
+        foreach (GameObject unit in Units)
+        {
+            MouseClick mouseClick = unit.GetComponent<MouseClick>();
+            if (mouseClick != null)
+            {
+                mouseClickScripts.Add(mouseClick);
+            }
+            else
+            {
+                Debug.LogWarning($"GameObject {unit.name} does not have a MouseClick component.");
+            }
+        }
+
+        if (mouseClickScripts.Count > 0)
         {
             foreach (var mouseClickScript in mouseClickScripts)
             {
-                if (mouseClickScript != null)
-                {
-                    mouseClickScript.enabled = false; // Ensure the script starts deactivated
-                    mouseClickScript.OnMouseClickUsed += ResetMouseClick; // Subscribe to the event
-                }
-                else
-                {
-                    Debug.LogError("A MouseClick script reference is missing in the list!");
-                }
+                mouseClickScript.enabled = false; // Ensure the script starts deactivated
+                mouseClickScript.OnMouseClickUsed += ResetMouseClick; // Subscribe to the event
             }
         }
         else
@@ -30,15 +39,12 @@ public class TriggerDamageScript : MonoBehaviour
 
     public void ToggleMouseClick()
     {
-        if (mouseClickScripts != null && mouseClickScripts.Count > 0)
+        foreach (var mouseClickScript in mouseClickScripts)
         {
-            foreach (var mouseClickScript in mouseClickScripts)
+            if (mouseClickScript != null && !mouseClickScript.enabled)
             {
-                if (mouseClickScript != null && !mouseClickScript.enabled)
-                {
-                    mouseClickScript.enabled = true; // Activate the MouseClick script
-                    Debug.Log($"MouseClick script activated on {mouseClickScript.gameObject.name}.");
-                }
+                mouseClickScript.enabled = true; // Activate the MouseClick script
+                Debug.Log($"MouseClick script activated on {mouseClickScript.gameObject.name}.");
             }
         }
     }
@@ -64,14 +70,11 @@ public class TriggerDamageScript : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (mouseClickScripts != null)
+        foreach (var mouseClickScript in mouseClickScripts)
         {
-            foreach (var mouseClickScript in mouseClickScripts)
+            if (mouseClickScript != null)
             {
-                if (mouseClickScript != null)
-                {
-                    mouseClickScript.OnMouseClickUsed -= ResetMouseClick; // Unsubscribe to prevent memory leaks
-                }
+                mouseClickScript.OnMouseClickUsed -= ResetMouseClick; // Unsubscribe to prevent memory leaks
             }
         }
     }
