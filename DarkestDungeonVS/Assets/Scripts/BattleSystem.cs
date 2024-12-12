@@ -12,6 +12,8 @@ public class BattleSystem : MonoBehaviour
     
     public BattleState state;
 
+    public static Action NextTurn;
+
     [SerializeField] List<GameObject> Allies = new List<GameObject>();
     [SerializeField] List<GameObject> Enemies = new List<GameObject>();
 
@@ -36,13 +38,11 @@ public class BattleSystem : MonoBehaviour
         Turn1(0);
         Turn2(1);
         Turn3(2);
+        Turn4(3);
+    }
 
-       /* if(Input.GetKeyDown(KeyCode.Space))
-        {
-            state = BattleState.ENEMY2;
-        }
-        else if (Input.GetKeyDown(KeyCode.P)) { state = BattleState.ALLY1; } */
-
+   public void BattleStateSwitch()
+    {
         switch (state)
         {
             case BattleState.START:
@@ -52,17 +52,22 @@ public class BattleSystem : MonoBehaviour
                 state = BattleState.ALLY2;
                 break;
             case BattleState.ALLY2:
-                //state = BattleState.ALLY3;  
+                state = BattleState.ALLY3;  
                 break;
             case BattleState.ALLY3:
+                state = BattleState.ALLY4;
                 break;
             case BattleState.ALLY4:
+                state = BattleState.ENEMY1;
                 break;
             case BattleState.ENEMY1:
+                state = BattleState.ENEMY2;
                 break;
             case BattleState.ENEMY2:
+                state = BattleState.ENEMY3;
                 break;
             case BattleState.ENEMY3:
+                state = BattleState.START;
                 break;
             case BattleState.WIN:
                 break;
@@ -71,7 +76,8 @@ public class BattleSystem : MonoBehaviour
             default:
                 break;
         }
-    }
+        }
+
     void SpawnPrefabs()
     {
         //zorgt ervoor dat de loop geen error geeft als de lists niet even groot zijn
@@ -109,9 +115,12 @@ public class BattleSystem : MonoBehaviour
             }
         }
     }
+
+
+    //if statements om te zien wie er aan de beurt is (turn highlight), later binden aan een cursor 
     void Turn1(int index)
     {
-        if(state == BattleState.ALLY4 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        if(state == BattleState.ALLY1 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
         {
             GameObject changeInstantie = InstantiatedAllies[index];
             changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
@@ -125,7 +134,7 @@ public class BattleSystem : MonoBehaviour
 
     void Turn2(int index)
     {
-        if (state == BattleState.ENEMY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        if (state == BattleState.ALLY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
         {
             GameObject changeInstantie = InstantiatedAllies[index];
             changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
@@ -138,7 +147,21 @@ public class BattleSystem : MonoBehaviour
     }
     void Turn3(int index)
     {
-        if (state == BattleState.ALLY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        if (state == BattleState.ALLY3 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
+        }
+        else
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
+
+    void Turn4(int index)
+    {
+        if (state == BattleState.ALLY4 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
         {
             GameObject changeInstantie = InstantiatedAllies[index];
             changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
