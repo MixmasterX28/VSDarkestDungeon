@@ -43,6 +43,12 @@ public class TriggerDamageScript : MonoBehaviour
         }
     }
 
+    public void AddAlly(MouseClick click)
+    {
+        // add to list
+        mouseClickScripts.Add(click);
+    }
+
     private void ResetMouseClick()
     {
         Debug.Log("MouseClick scripts have been reset.");

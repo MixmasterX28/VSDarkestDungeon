@@ -14,6 +14,8 @@ public class BattleSystem : MonoBehaviour
 
     public static Action NextTurn;
 
+    private TriggerDamageScript triggerDamageScript;
+
     [SerializeField] List<GameObject> Allies = new List<GameObject>();
     [SerializeField] List<GameObject> Enemies = new List<GameObject>();
 
@@ -30,6 +32,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.START;
         Debug.Log("Battle START!");
+        triggerDamageScript = FindAnyObjectByType<TriggerDamageScript>();
         SpawnPrefabs();
     }
 
@@ -92,6 +95,9 @@ public class BattleSystem : MonoBehaviour
                 Vector2 spawnPosition = SpawnPointAllies[i];
                 GameObject newAlly = Instantiate(Allies[i], spawnPosition, Quaternion.identity);
                 InstantiatedAllies.Add(newAlly);
+                //gemaakt om de list van de triggerdamage script aan te passen
+                   Debug.Log("sdjiawiudha" + triggerDamageScript);
+               triggerDamageScript.AddAlly(newAlly.GetComponent<MouseClick>());
                 Debug.Log($"Ally {i + 1} instantiated at {spawnPosition}");
             }
             else
