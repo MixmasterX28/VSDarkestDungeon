@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class HPSystem : MonoBehaviour, IKill 
 {
-    private float HealthPoints;
+    private float healthPoints;
   
-    public float healthPoints 
+    public float HealthPoints 
     {
-        get { return HealthPoints; } 
-        set { HealthPoints = value; }
+        get { return healthPoints; } 
+        set { healthPoints = value; }
     }
 
     // Uses UnitDeath from IKill and makes sure that the objects gets destroyed and the value stays 0
     public void UnitDeath() 
     {
             Destroy(gameObject);  
-            HealthPoints = 0; 
+            healthPoints = 0; 
     }
 }

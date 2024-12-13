@@ -7,7 +7,7 @@ Comments over iets specifieker in een function doe dan naast het betreffende lin
 Comments moeten leesbaar zijn en het liefst met genoeg informatie wat het doet, dit zorgt ervoor dat de comments overzichtelijker en begrijpelijk zijn.
 
 # Voorbeelden goede comment: 
-
+~~~
 if (Input.GetMouseButtonDown(0))
 {
     if (damageSystem != null)
@@ -17,16 +17,19 @@ if (Input.GetMouseButtonDown(0))
         OnMouseClickUsed?.Invoke(); // Notify that the script was used
     }
 }
+~~~
 
+~~~
 // Uses UnitDeath from IKill and makes sure that the objects gets destroyed and the value stays 0
 public void UnitDeath() 
 {
      Destroy(gameObject);  
     HealthPoints = 0; 
 }
+~~~
 
 # Voorbeelden slechte comment:
 
-private HPSystem HealthText;  // References to the HPSystem component
+~~~private HPSystem HealthText;  // References to the HPSystem component~~~
 
 Dit is een slechte comment omdat het enigszins al duidelijk is wat dit line code doet. 

@@ -13,6 +13,6 @@ public class DamageSystem : MonoBehaviour
     public void GetDamage()
     {
         damage = Random.Range(1, 9);
-        health.healthPoints -= damage; 
+        health.HealthPoints -= damage; 
     }
 }

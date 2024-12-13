@@ -2,14 +2,14 @@ public class CrusaderHealth : HPSystem
 {
     void Start()
     {
-        healthPoints = 33;
+        HealthPoints = 33;
     }
 
 
 
     void Update()
     {
-        if (healthPoints <= 0)
+        if (HealthPoints <= 0)
         {
             UnitDeath();
         }

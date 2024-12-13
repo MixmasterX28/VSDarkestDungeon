@@ -8,14 +8,14 @@ public class PlagueDocterText : TestHPText
     {
 
         // Ensures health is set up properly.
-        if (healthText == null)
+        if (HealthText == null)
         {
-            healthText = FindObjectOfType<PlagueDoctorHP>();  // Automatically finds the HPSystem component in the scene
+            HealthText = FindObjectOfType<PlagueDoctorHP>();  // Automatically finds the HPSystem component in the scene
         }
 
-        if (textField == null)
+        if (TextField == null)
         {
-            textField = GetComponent<TMP_Text>();  // Makes sure the TMP_Text field is properly assigned
+            TextField = GetComponent<TMP_Text>();  // Makes sure the TMP_Text field is properly assigned
         }
     }
 
