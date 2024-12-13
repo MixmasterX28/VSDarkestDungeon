@@ -2,14 +2,14 @@ public class HighwayManHealth : HPSystem
 {
     void Start()
     {
-        hp = 23;
+        healthPoints = 23;
     }
 
     void Update()
     {
-        if (hp <= 0)
+        if (healthPoints <= 0)
         {
-            Die();
+            UnitDeath();
         }
     }
 }

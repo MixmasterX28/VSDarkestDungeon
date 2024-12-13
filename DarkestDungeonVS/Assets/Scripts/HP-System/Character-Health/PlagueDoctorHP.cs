@@ -2,14 +2,14 @@ public class PlagueDoctorHP : HPSystem
 {
     void Start()
     {
-        hp = 22;
+        healthPoints = 22;
     }
 
     void Update()
     {
-        if (hp <= 0)
+        if (healthPoints <= 0)
         {
-            Die();
+            UnitDeath();
         }
     }
 }

@@ -10,9 +10,9 @@ public class DamageSystem : MonoBehaviour
         health = GetComponent<HPSystem>();
     }
 
-    public void Damage()
+    public void GetDamage()
     {
         damage = Random.Range(1, 9);
-        health.hp -= damage; 
+        health.healthPoints -= damage; 
     }
 }

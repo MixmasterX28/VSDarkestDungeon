@@ -8,9 +8,9 @@ public class VestalText : TestHPText
     {
 
         // Ensures health is set up properly.
-        if (health == null)
+        if (healthText == null)
         {
-            health = FindObjectOfType<VestalHealth>();  // Automatically finds the HPSystem component in the scene
+            healthText = FindObjectOfType<VestalHealth>();  // Automatically finds the HPSystem component in the scene
         }
 
         if (textField == null)

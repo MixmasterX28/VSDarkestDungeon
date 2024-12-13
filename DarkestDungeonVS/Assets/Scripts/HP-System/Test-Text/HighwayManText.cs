@@ -8,9 +8,9 @@ public class HighwayManText : TestHPText
     {
 
         // Ensures health is set up properly.
-        if (health == null)
+        if (healthText == null)
         {
-            health = FindObjectOfType<HighwayManHealth>();  // Automatically finds the HPSystem component in the scene
+            healthText = FindObjectOfType<HighwayManHealth>();  // Automatically finds the HPSystem component in the scene
         }
 
         if (textField == null)

@@ -6,9 +6,9 @@ public class CrusaderText : TestHPText
     void Start()
     {
         // Ensures health is set up properly.
-        if (health == null)
+        if (healthText == null)
         {
-            health = FindObjectOfType<CrusaderHealth>();  // Automatically finds the HPSystem component in the scene
+            healthText = FindObjectOfType<CrusaderHealth>();  // Automatically finds the HPSystem component in the scene
         }
 
         if (textField == null)

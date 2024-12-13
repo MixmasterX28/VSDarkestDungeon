@@ -2,15 +2,15 @@ public class VestalHealth : HPSystem
 {
     void Start()
     {
-        hp = 24;
+        healthPoints = 24; 
     }
 
 
     void Update()
     {
-        if (hp <= 0)
+        if (healthPoints <= 0)
         {
-            Die();
+            UnitDeath(); // Activates when the healthPoints reaches 0
         }
     }
 }

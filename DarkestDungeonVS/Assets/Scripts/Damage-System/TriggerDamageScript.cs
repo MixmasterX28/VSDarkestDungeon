@@ -5,12 +5,12 @@ using Unity.VisualScripting;
 public class TriggerDamageScript : MonoBehaviour
 {
     [SerializeField] private List<MouseClick> mouseClickScripts = new List<MouseClick>(); // Initialize the list
-    private GameObject[] Units;
+    private GameObject[] units;
 
     private void Start()
     {
-        Units = GameObject.FindGameObjectsWithTag("Unit");
-        foreach (GameObject unit in Units)
+        units = GameObject.FindGameObjectsWithTag("Unit");
+        foreach (GameObject unit in units)
         {
             MouseClick mouseClick = unit.GetComponent<MouseClick>();
             if (mouseClick != null)
