@@ -42,11 +42,3 @@ Maak de game een beetje duidelijker en leg het een beetje meer uit zodat spelers
 
 # Kwaliteit van de test footage
 We vonden dat de kwaliteit van de test footage heel duidelijk en het was en makkelijk te bekijken, de game footage was helder en had iedereen in beeld en de facecam en audio waren super helder waardoor we de reacties van de testers duidelijk konden uitmaken. We zouden zelf helemaal niks anders doen omdat dit alles laat zien wat we nodig zouden hebben.
-
-# User test DarkestDungeonVS prototype
-
-[Video 1](https://streamable.com/sb88vp)
-
-[Video 2](https://streamable.com/sf6iwd)
-
-[Video 3](https://streamable.com/ipoby8)
