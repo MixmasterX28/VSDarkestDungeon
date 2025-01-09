@@ -482,6 +482,58 @@ PrefabInstance:
       propertyPath: m_Name
       value: Battle system
       objectReference: {fileID: 0}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Allies.Array.data[0]
+      value: 
+      objectReference: {fileID: 1342678412332725256, guid: 56d2d190d3aa6dc438ce14839300a134, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Allies.Array.data[1]
+      value: 
+      objectReference: {fileID: 962900820785704169, guid: 41d2753344f3dce4786bc8dbe2531084, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Allies.Array.data[2]
+      value: 
+      objectReference: {fileID: 6009735908728084782, guid: b94aee3d9f9315e4689619375780ebda, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Allies.Array.data[3]
+      value: 
+      objectReference: {fileID: 2722060798930194976, guid: 04b6cc8282c047c49bad38915c585f2c, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Enemies.Array.data[0]
+      value: 
+      objectReference: {fileID: 8356199652722490545, guid: 79893145cee5817468744d1e81c0af82, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Enemies.Array.data[1]
+      value: 
+      objectReference: {fileID: 3683881104515113928, guid: 3abf15211402c9c4eb6663e556069da9, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Enemies.Array.data[2]
+      value: 
+      objectReference: {fileID: 1878651990365357477, guid: 2a5b49683f7b8f240a216c894f5187eb, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: SpawnPointAllies.Array.data[0].x
+      value: -7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: SpawnPointAllies.Array.data[0].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: SpawnPointAllies.Array.data[1].x
+      value: -5.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: SpawnPointAllies.Array.data[1].y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: SpawnPointAllies.Array.data[2].x
+      value: -4.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: SpawnPointAllies.Array.data[3].y
+      value: 0.39
+      objectReference: {fileID: 0}
     - target: {fileID: 4798195179099735291, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
       propertyPath: m_RootOrder
       value: 1
