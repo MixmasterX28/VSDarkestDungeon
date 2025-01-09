@@ -56,17 +56,28 @@ public class TriggerDamageScript : MonoBehaviour
 
     public void ResetMouseClick()
     {
-        Debug.Log("MouseClick scripts have been reset.");
+        Debug.Log("ResetMouseClick called.");
         foreach (var mouseClickScript in mouseClickScripts)
         {
             if (mouseClickScript != null)
             {
                 mouseClickScript.gameObject.GetComponent<Renderer>().sharedMaterial.color = Color.white; // Reset color
                 mouseClickScript.enabled = false; // Deactivate the script
-                battleSystem.BattleStateSwitch();
+                Debug.Log($"Resetting mouse click for {mouseClickScript.gameObject.name}");
             }
         }
+
+        if (battleSystem != null)
+        {
+            Debug.Log("Switching battle state.");
+            battleSystem.BattleStateSwitch();
+        }
+        else
+        {
+            Debug.LogError("BattleSystem reference is null in ResetMouseClick.");
+        }
     }
+
 
     private void OnDestroy()
     {

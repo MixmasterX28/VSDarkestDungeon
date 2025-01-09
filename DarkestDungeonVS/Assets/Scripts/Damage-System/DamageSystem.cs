@@ -12,7 +12,7 @@ public class DamageSystem : MonoBehaviour
 
     public void Damage()
     {
-        damage = Random.Range(1, 9);
+        damage = Random.Range(7, 9);
         health.hp -= damage; 
     }
 }
