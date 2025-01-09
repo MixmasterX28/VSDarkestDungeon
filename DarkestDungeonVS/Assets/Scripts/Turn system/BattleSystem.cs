@@ -18,14 +18,17 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] List<GameObject> Allies = new List<GameObject>();
     [SerializeField] List<GameObject> Enemies = new List<GameObject>();
 
-    private List<GameObject> InstantiatedAllies = new List<GameObject>();
-    private List<GameObject> InstantiatedEnemies = new List<GameObject>();
+    [SerializeField] List<GameObject> InstantiatedAllies = new List<GameObject>();
+    [SerializeField] List<GameObject> InstantiatedEnemies = new List<GameObject>();
 
 
     [SerializeField] List<Vector2> SpawnPointAllies = new List<Vector2>();
     [SerializeField] List<Vector2> SpawnPointEnemies = new List<Vector2>();
 
     public Color CurrentTurnColor = Color.yellow;
+
+    [SerializeField] List<BattleState> visitedStates = new List<BattleState>();
+
 
 
     // Start is called before the first frame update
@@ -41,48 +44,56 @@ public class BattleSystem : MonoBehaviour
 
     private void Update()
     {
-        Turn1(0);
-        Turn2(1);
-        Turn3(2);
-        Turn4(3);
+        HighlightTurn(BattleState.ALLY1, 0, InstantiatedAllies);
+        HighlightTurn(BattleState.ALLY2, 1, InstantiatedAllies);
+        HighlightTurn(BattleState.ALLY3, 2, InstantiatedAllies);
+        HighlightTurn(BattleState.ALLY4, 3, InstantiatedAllies);
+        HighlightTurn(BattleState.ENEMY1, 0, InstantiatedEnemies);
+        HighlightTurn(BattleState.ENEMY2, 1, InstantiatedEnemies);
+        HighlightTurn(BattleState.ENEMY3, 2, InstantiatedEnemies);
     }
 
-   public void BattleStateSwitch()
+
+    public void BattleStateSwitch()
     {
-        switch (state)
+        // Add the current state to the visited list if it's not already there
+        if (!visitedStates.Contains(state))
         {
-            case BattleState.START:
-                state = BattleState.ALLY1;
-                break;
-            case BattleState.ALLY1:
-                state = BattleState.ALLY2;
-                break;
-            case BattleState.ALLY2:
-                state = BattleState.ALLY3;  
-                break;
-            case BattleState.ALLY3:
-                state = BattleState.ALLY4;
-                break;
-            case BattleState.ALLY4:
-                state = BattleState.ENEMY1;
-                break;
-            case BattleState.ENEMY1:
-                state = BattleState.ENEMY2;
-                break;
-            case BattleState.ENEMY2:
-                state = BattleState.ENEMY3;
-                break;
-            case BattleState.ENEMY3:
-                state = BattleState.START;
-                break;
-            case BattleState.WIN:
-                break;
-            case BattleState.LOSE:
-                break;
-            default:
-                break;
+            visitedStates.Add(state);
         }
+
+        // Find the next state that has not been visited
+        BattleState nextState = GetNextUnvisitedState();
+
+        // If all states have been visited, reset for the next round
+        if (nextState == BattleState.START)
+        {
+            visitedStates.Clear();
+            nextState = BattleState.ALLY1; // Start a new round with ALLY1
         }
+
+        state = nextState;
+    }
+
+    public BattleState GetNextUnvisitedState()
+    {
+        BattleState[] allStates = {
+        BattleState.ALLY1, BattleState.ALLY3, BattleState.ALLY4, BattleState.ENEMY2, BattleState.ALLY2,
+        BattleState.ENEMY1, BattleState.ENEMY3
+    };
+
+        foreach (BattleState potentialState in allStates)
+        {
+            if (!visitedStates.Contains(potentialState))
+            {
+                return potentialState;
+            }
+        }
+
+        // Return START to indicate all states have been visited
+        return BattleState.START;
+    }
+
 
     void SpawnPrefabs()
     {
@@ -144,99 +155,13 @@ public class BattleSystem : MonoBehaviour
 
 
     //if statements om te zien wie er aan de beurt is (turn highlight), later binden aan een cursor 
-    void Turn1(int index)
+    private void HighlightTurn(BattleState currentState, int index, List<GameObject> entities)
     {
-        if(state == BattleState.ALLY1 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        if (index >= 0 && index < entities.Count && entities[index] != null)
         {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }    
-
-    void Turn2(int index)
-    {
-        if (state == BattleState.ALLY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
-    void Turn3(int index)
-    {
-        if (state == BattleState.ALLY3 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
+            GameObject entity = entities[index];
+            entity.GetComponent<SpriteRenderer>().color = (state == currentState) ? Color.yellow : Color.white;
         }
     }
 
-    void Turn4(int index)
-    {
-        if (state == BattleState.ALLY4 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
-
-    void Turn5(int index)
-    {
-        if (state == BattleState.ENEMY1 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
-
-    void Turn6(int index)
-    {
-        if (state == BattleState.ENEMY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
-    void Turn7(int index)
-    {
-        if (state == BattleState.ENEMY3 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
 }

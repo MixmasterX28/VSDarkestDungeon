@@ -947,6 +947,10 @@ PrefabInstance:
       value: Battle system
       objectReference: {fileID: 0}
     - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: state
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
       propertyPath: Allies.Array.data[0]
       value: 
       objectReference: {fileID: 1938050844221934656, guid: e6349dd113602084f9fd37217498d722, type: 3}
