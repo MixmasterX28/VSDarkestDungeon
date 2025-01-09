@@ -19,6 +19,8 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] List<GameObject> Enemies = new List<GameObject>();
 
     private List<GameObject> InstantiatedAllies = new List<GameObject>();
+    private List<GameObject> InstantiatedEnemies = new List<GameObject>();
+
 
     [SerializeField] List<Vector2> SpawnPointAllies = new List<Vector2>();
     [SerializeField] List<Vector2> SpawnPointEnemies = new List<Vector2>();
@@ -33,6 +35,8 @@ public class BattleSystem : MonoBehaviour
         Debug.Log("Battle START!");
         triggerDamageScript = FindAnyObjectByType<TriggerDamageScript>();
         SpawnPrefabs();
+
+
     }
 
     private void Update()
@@ -82,7 +86,7 @@ public class BattleSystem : MonoBehaviour
 
     void SpawnPrefabs()
     {
-        //zorgt ervoor dat de loop geen error geeft als de lists niet even groot zijn
+        // Ensure no errors occur if lists are uneven
         int allyCount = Mathf.Min(Allies.Count, SpawnPointAllies.Count);
         int enemyCount = Mathf.Min(Enemies.Count, SpawnPointEnemies.Count);
 
@@ -93,11 +97,17 @@ public class BattleSystem : MonoBehaviour
             {
                 Vector2 spawnPosition = SpawnPointAllies[i];
                 GameObject newAlly = Instantiate(Allies[i], spawnPosition, Quaternion.identity);
-                InstantiatedAllies.Add(newAlly);
-                //gemaakt om de list van de triggerdamage script aan te passen
-                   Debug.Log("sdjiawiudha" + triggerDamageScript);
-               triggerDamageScript.AddAlly(newAlly.GetComponent<MouseClick>());
-                Debug.Log($"Ally {i + 1} instantiated at {spawnPosition}");
+                var mouseClick = newAlly.GetComponent<MouseClick>();
+                if (mouseClick != null)
+                {
+                    triggerDamageScript.AddAlly(mouseClick); // Add MouseClick to TriggerDamageScript
+                    Debug.Log($"Ally {i + 1} instantiated at {spawnPosition}");
+                }
+                else
+                {
+                    Debug.LogError($"Spawned ally at {spawnPosition} is missing a MouseClick component!");
+                }
+                InstantiatedAllies.Add(newAlly); // Add to the list of instantiated allies
             }
             else
             {
@@ -112,7 +122,17 @@ public class BattleSystem : MonoBehaviour
             {
                 Vector2 spawnPosition = SpawnPointEnemies[i];
                 GameObject newEnemy = Instantiate(Enemies[i], spawnPosition, Quaternion.identity);
-                Debug.Log($"Enemy {i + 1} instantiated at {spawnPosition}");
+                var mouseClick = newEnemy.GetComponent<MouseClick>();
+                if (mouseClick != null)
+                {
+                    triggerDamageScript.AddAlly(mouseClick); // Add MouseClick to TriggerDamageScript
+                    Debug.Log($"Enemy {i + 1} instantiated at {spawnPosition}");
+                }
+                else
+                {
+                    Debug.LogError($"Spawned enemy at {spawnPosition} is missing a MouseClick component!");
+                }
+                InstantiatedEnemies.Add(newEnemy); // Add to the list of instantiated enemies
             }
             else
             {
@@ -122,13 +142,14 @@ public class BattleSystem : MonoBehaviour
     }
 
 
+
     //if statements om te zien wie er aan de beurt is (turn highlight), later binden aan een cursor 
     void Turn1(int index)
     {
         if(state == BattleState.ALLY1 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
         {
             GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
         }
         else
         {
@@ -142,7 +163,7 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.ALLY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
         {
             GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
         }
         else
         {
@@ -155,7 +176,7 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.ALLY3 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
         {
             GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
         }
         else
         {
@@ -169,7 +190,48 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.ALLY4 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
         {
             GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.red;
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+        else
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
+
+    void Turn5(int index)
+    {
+        if (state == BattleState.ENEMY1 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+        else
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
+
+    void Turn6(int index)
+    {
+        if (state == BattleState.ENEMY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+        else
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
+    void Turn7(int index)
+    {
+        if (state == BattleState.ENEMY3 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        {
+            GameObject changeInstantie = InstantiatedAllies[index];
+            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
         }
         else
         {
