@@ -46,6 +46,9 @@ public class BattleSystem : MonoBehaviour
         Turn2(1);
         Turn3(2);
         Turn4(3);
+        Turn5(4);
+        Turn6(5);
+        Turn7(6);
     }
 
    public void BattleStateSwitch()

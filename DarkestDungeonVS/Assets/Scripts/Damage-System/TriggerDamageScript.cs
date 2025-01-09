@@ -5,9 +5,11 @@ using Unity.VisualScripting;
 public class TriggerDamageScript : MonoBehaviour
 {
     [SerializeField] private List<MouseClick> mouseClickScripts = new List<MouseClick>(); // Initialize the list
+    private BattleSystem battleSystem;
 
     private void Start()
     {
+        battleSystem = FindAnyObjectByType<BattleSystem>();
 
 
         if (mouseClickScripts.Count > 0)
@@ -61,6 +63,7 @@ public class TriggerDamageScript : MonoBehaviour
             {
                 mouseClickScript.gameObject.GetComponent<Renderer>().sharedMaterial.color = Color.white; // Reset color
                 mouseClickScript.enabled = false; // Deactivate the script
+                battleSystem.BattleStateSwitch();
             }
         }
     }
