@@ -5,30 +5,17 @@ using Unity.VisualScripting;
 public class TriggerDamageScript : MonoBehaviour
 {
     [SerializeField] private List<MouseClick> mouseClickScripts = new List<MouseClick>(); // Initialize the list
-    private GameObject[] Units;
 
     private void Start()
     {
-        Units = GameObject.FindGameObjectsWithTag("Unit");
-        foreach (GameObject unit in Units)
-        {
-            MouseClick mouseClick = unit.GetComponent<MouseClick>();
-            if (mouseClick != null)
-            {
-                mouseClickScripts.Add(mouseClick);
-            }
-            else
-            {
-                Debug.LogWarning($"GameObject {unit.name} does not have a MouseClick component.");
-            }
-        }
+
 
         if (mouseClickScripts.Count > 0)
         {
             foreach (var mouseClickScript in mouseClickScripts)
             {
-                mouseClickScript.enabled = false; // Ensure the script starts deactivated
                 mouseClickScript.OnMouseClickUsed += ResetMouseClick; // Subscribe to the event
+                mouseClickScript.enabled = false; // Ensure the script starts deactivated
             }
         }
         else
@@ -51,19 +38,29 @@ public class TriggerDamageScript : MonoBehaviour
 
     public void AddAlly(MouseClick click)
     {
-        // add to list
-        mouseClickScripts.Add(click);
+        if (click == null)
+        {
+            Debug.LogError("Tried to add a null MouseClick reference!");
+            return;
+        }
+
+        mouseClickScripts.Add(click); // Add to the list
+        click.OnMouseClickUsed += ResetMouseClick; // Subscribe to the event
+        click.enabled = false; // Ensure the script starts disabled
+
+        Debug.Log($"MouseClick script added for {click.gameObject.name}");
     }
 
-    private void ResetMouseClick()
+
+    public void ResetMouseClick()
     {
         Debug.Log("MouseClick scripts have been reset.");
         foreach (var mouseClickScript in mouseClickScripts)
         {
             if (mouseClickScript != null)
             {
+                mouseClickScript.gameObject.GetComponent<Renderer>().sharedMaterial.color = Color.white; // Reset color
                 mouseClickScript.enabled = false; // Deactivate the script
-                mouseClickScript.gameObject.GetComponent<Renderer>().material.color = Color.white; // Reset color
             }
         }
     }
