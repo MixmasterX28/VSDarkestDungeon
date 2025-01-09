@@ -79,8 +79,8 @@ public class BattleSystem : MonoBehaviour
     public BattleState GetNextUnvisitedState()
     {
         BattleState[] allStates = {
-        BattleState.ALLY1, BattleState.ALLY2, BattleState.ALLY3, BattleState.ALLY4,
-        BattleState.ENEMY1, BattleState.ENEMY2, BattleState.ENEMY3
+        BattleState.ALLY1, BattleState.ALLY3, BattleState.ALLY4, BattleState.ENEMY2, BattleState.ALLY2,
+        BattleState.ENEMY1, BattleState.ENEMY3
     };
 
         foreach (BattleState potentialState in allStates)
