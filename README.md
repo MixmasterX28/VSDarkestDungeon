@@ -37,8 +37,12 @@ Wat ervaarde je tijdens het spelen?
 Hoe kunnen we de game nog beter maken?
 Wat zijn de leukste momenten tijdenshet spelen?
 
-
 ## Wat hebben we nodig om goed te kunnen testen? (mensen, ruimte, materiaal, software, kennis)
 Wij moeten eerst nog onze build gaan afmaken met een paar van onze features en nog wat art van de game. Daarna nog een laptop/computer waarop het kan gaan zitten zodat we de user het spel kunnen later spelen. Dan is het nog handig om een software op de computer te gaan hebben die het spel zit te opnemen. Een lokaal is ook wel handig zodat we dan een plek hebben waar we rustig onze test kunnen gaan doen. Als laatst nog een camera eventueel zodat we kunnen kijken naar het gezicht op welke stukken de persoon het leuk of saai vindt.
 Wat hebben we nodig om goede footage te krijgen die later ook goed te analyseren is?
 We willen heldere beeld van de game voor de gameplay en een webcam screen om de gezicht van de tester te zien zodat we kunnen weten wat voor gezicht ze maken terwijl ze de game spelen, ook willen we dat ze hun stem duidelijk kunnen horen zodat we kunnen weten was ze denken.
+
+
+## Visual Sheet
+![Visual Sheet van de Turn System](https://github.com/user-attachments/assets/7dbcf3b4-6a52-47ec-857a-aa7e6105bb49)
+
