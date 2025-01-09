@@ -28,6 +28,11 @@ public class BattleSystem : MonoBehaviour
 
     public Color CurrentTurnColor = Color.yellow;
 
+    [SerializeField] GameObject UIplague;
+    [SerializeField] GameObject UIcrusader;
+    [SerializeField] GameObject UIhighway;
+    [SerializeField] GameObject UIvestal;
+
 
     // Start is called before the first frame update
     void Start()
@@ -54,15 +59,23 @@ public class BattleSystem : MonoBehaviour
         {
             case BattleState.START:
                 state = BattleState.ALLY1;
+                UIvestal.SetActive(false);
+                UIplague.SetActive(true);
                 break;
             case BattleState.ALLY1:
                 state = BattleState.ALLY2;
+                UIplague.SetActive(false);
+                UIcrusader.SetActive(true);
                 break;
             case BattleState.ALLY2:
-                state = BattleState.ALLY3;  
+                state = BattleState.ALLY3;
+                UIcrusader.SetActive(false);
+                UIhighway.SetActive(true);
                 break;
             case BattleState.ALLY3:
                 state = BattleState.ALLY4;
+                UIhighway.SetActive(false);
+                UIvestal.SetActive(true);
                 break;
             case BattleState.ALLY4:
                 state = BattleState.ENEMY1;
