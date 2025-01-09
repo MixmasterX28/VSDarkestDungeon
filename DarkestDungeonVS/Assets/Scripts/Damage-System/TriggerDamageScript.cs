@@ -1,91 +1,119 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 public class TriggerDamageScript : MonoBehaviour
 {
-    [SerializeField] private List<MouseClick> mouseClickScripts = new List<MouseClick>(); // Initialize the list
+    [SerializeField] private List<MouseClick> playerClickScripts = new List<MouseClick>();
+    [SerializeField] private List<MouseClick> enemyClickScripts = new List<MouseClick>();
     private BattleSystem battleSystem;
+    private bool damageModeActive = false; // Track if damage mode is active
 
     private void Start()
     {
         battleSystem = FindAnyObjectByType<BattleSystem>();
 
-
-        if (mouseClickScripts.Count > 0)
-        {
-            foreach (var mouseClickScript in mouseClickScripts)
-            {
-                mouseClickScript.OnMouseClickUsed += ResetMouseClick; // Subscribe to the event
-                mouseClickScript.enabled = false; // Ensure the script starts deactivated
-            }
-        }
-        else
-        {
-            Debug.LogError("MouseClick scripts list is empty or not assigned!");
-        }
-    }
-
-    public void ToggleMouseClick()
-    {
-        foreach (var mouseClickScript in mouseClickScripts)
-        {
-            if (mouseClickScript != null && !mouseClickScript.enabled)
-            {
-                mouseClickScript.enabled = true; // Activate the MouseClick script
-                Debug.Log($"MouseClick script activated on {mouseClickScript.gameObject.name}.");
-            }
-        }
+        // Disable all MouseClick scripts at the start
+        DisableAllMouseClicks();
     }
 
     public void AddAlly(MouseClick click)
     {
-        if (click == null)
-        {
-            Debug.LogError("Tried to add a null MouseClick reference!");
-            return;
-        }
+        if (click == null) return;
 
-        mouseClickScripts.Add(click); // Add to the list
-        click.OnMouseClickUsed += ResetMouseClick; // Subscribe to the event
-        click.enabled = false; // Ensure the script starts disabled
-
-        Debug.Log($"MouseClick script added for {click.gameObject.name}");
+        playerClickScripts.Add(click);
+        click.OnMouseClickUsed += ResetMouseClick;
+        click.enabled = false; // Ensure it starts disabled
     }
 
+    public void AddEnemy(MouseClick click)
+    {
+        if (click == null) return;
+
+        enemyClickScripts.Add(click);
+        click.OnMouseClickUsed += ResetMouseClick;
+        click.enabled = false; // Ensure it starts disabled
+    }
+
+    public void EnableDamageMode()
+    {
+        // Only allow enabling damage mode during a player's turn
+        if (battleSystem == null || !battleSystem.state.ToString().StartsWith("ALLY")) return;
+
+        damageModeActive = true;
+
+        // Enable only enemy MouseClick scripts
+        foreach (var mouseClickScript in enemyClickScripts)
+        {
+            if (mouseClickScript != null)
+            {
+                mouseClickScript.enabled = true;
+                Debug.Log($"{mouseClickScript.gameObject.name} is now clickable.");
+            }
+        }
+    }
 
     public void ResetMouseClick()
     {
-        Debug.Log("ResetMouseClick called.");
-        foreach (var mouseClickScript in mouseClickScripts)
-        {
-            if (mouseClickScript != null)
-            {
-                mouseClickScript.gameObject.GetComponent<Renderer>().sharedMaterial.color = Color.white; // Reset color
-                mouseClickScript.enabled = false; // Deactivate the script
-                Debug.Log($"Resetting mouse click for {mouseClickScript.gameObject.name}");
-            }
-        }
+        // Disable all MouseClick scripts and deactivate damage mode
+        DisableAllMouseClicks();
+        damageModeActive = false;
 
+        // Notify the BattleSystem to switch to the next turn
         if (battleSystem != null)
         {
-            Debug.Log("Switching battle state.");
             battleSystem.BattleStateSwitch();
-        }
-        else
-        {
-            Debug.LogError("BattleSystem reference is null in ResetMouseClick.");
         }
     }
 
-
-    private void OnDestroy()
+    private void DisableAllMouseClicks()
     {
-        foreach (var mouseClickScript in mouseClickScripts)
+        foreach (var mouseClickScript in playerClickScripts)
         {
             if (mouseClickScript != null)
             {
-                mouseClickScript.OnMouseClickUsed -= ResetMouseClick; // Unsubscribe to prevent memory leaks
+                mouseClickScript.enabled = false;
+                mouseClickScript.gameObject.GetComponent<Renderer>().sharedMaterial.color = Color.white; // Reset color
+            }
+        }
+
+        foreach (var mouseClickScript in enemyClickScripts)
+        {
+            if (mouseClickScript != null)
+            {
+                mouseClickScript.enabled = false;
+                mouseClickScript.gameObject.GetComponent<Renderer>().sharedMaterial.color = Color.white; // Reset color
+            }
+        }
+    }
+
+    public void SwitchTurn()
+    {
+        // Directly switch the turn without enabling MouseClick scripts
+        if (battleSystem != null)
+        {
+            battleSystem.BattleStateSwitch();
+        }
+
+        // Ensure all MouseClick scripts are disabled after turn switching
+        DisableAllMouseClicks();
+        damageModeActive = false;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var mouseClickScript in playerClickScripts)
+        {
+            if (mouseClickScript != null)
+            {
+                mouseClickScript.OnMouseClickUsed -= ResetMouseClick;
+            }
+        }
+
+        foreach (var mouseClickScript in enemyClickScripts)
+        {
+            if (mouseClickScript != null)
+            {
+                mouseClickScript.OnMouseClickUsed -= ResetMouseClick;
             }
         }
     }

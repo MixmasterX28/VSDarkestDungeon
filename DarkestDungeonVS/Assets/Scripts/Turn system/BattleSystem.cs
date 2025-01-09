@@ -9,7 +9,6 @@ public enum BattleState { START, ALLY1, ALLY2, ALLY3, ALLY4, ENEMY1, ENEMY2, ENE
 
 public class BattleSystem : MonoBehaviour
 {
-    
     public BattleState state;
 
     public static Action NextTurn;
@@ -22,15 +21,12 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] List<GameObject> InstantiatedAllies = new List<GameObject>();
     [SerializeField] List<GameObject> InstantiatedEnemies = new List<GameObject>();
 
-
     [SerializeField] List<Vector2> SpawnPointAllies = new List<Vector2>();
     [SerializeField] List<Vector2> SpawnPointEnemies = new List<Vector2>();
 
     public Color CurrentTurnColor = Color.yellow;
 
     [SerializeField] List<BattleState> visitedStates = new List<BattleState>();
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -39,8 +35,6 @@ public class BattleSystem : MonoBehaviour
         Debug.Log("Battle START!");
         triggerDamageScript = FindAnyObjectByType<TriggerDamageScript>();
         SpawnPrefabs();
-
-
     }
 
     private void Update()
@@ -52,40 +46,116 @@ public class BattleSystem : MonoBehaviour
         HighlightTurn(BattleState.ENEMY1, 0, InstantiatedEnemies);
         HighlightTurn(BattleState.ENEMY2, 1, InstantiatedEnemies);
         HighlightTurn(BattleState.ENEMY3, 2, InstantiatedEnemies);
-    }
 
+        if (state == BattleState.START)
+        {
+            StartCoroutine(DelayAndSwitchState());
+            return;
+        }
+
+    }
 
     public void BattleStateSwitch()
     {
-        // Add the current state to the visited list if it's not already there
+        // Prevent further state changes after WIN or LOSE
+        if (state == BattleState.WIN || state == BattleState.LOSE)
+        {
+            Debug.Log($"Game Over: {state}");
+            return; // No more state transitions after the game ends
+        }
+
+        // Check for WIN or LOSE condition before switching the state
+        if (IsAlliesDefeated())
+        {
+            Debug.Log("All allies are defeated. YOU LOSE!");
+            state = BattleState.LOSE;
+            return; // Early exit if the game is over
+        }
+        else if (IsEnemiesDefeated())
+        {
+            Debug.Log("All enemies are defeated. YOU WIN!");
+            state = BattleState.WIN;
+            return; // Early exit if the game is over
+        }
+
+        // Proceed with the normal state switching
         if (!visitedStates.Contains(state))
         {
             visitedStates.Add(state);
         }
 
-        // Find the next state that has not been visited
-        BattleState nextState = GetNextUnvisitedState();
+        BattleState nextState = GetNextValidUnvisitedState();
 
-        // If all states have been visited, reset for the next round
         if (nextState == BattleState.START)
         {
             visitedStates.Clear();
-            nextState = BattleState.ALLY1; // Start a new round with ALLY1
+            GetNextValidUnvisitedState();
+        }
+
+        // If the current state is START, wait before moving to the next state
+        if (state == BattleState.START)
+        {
+            StartCoroutine(DelayAndSwitchState());
+            return;
         }
 
         state = nextState;
+
+        if (state.ToString().StartsWith("ENEMY"))
+        {
+            // Trigger auto-attack for enemy turns
+            StartCoroutine(EnemyAttack());
+        }
     }
 
-    public BattleState GetNextUnvisitedState()
+    private bool IsAlliesDefeated()
+    {
+        // Check if there are no active allies left
+        return InstantiatedAllies.FindAll(ally => ally != null && ally.activeInHierarchy).Count == 0;
+    }
+
+    private bool IsEnemiesDefeated()
+    {
+        // Get count of active enemies
+        int activeEnemiesCount = InstantiatedEnemies.FindAll(enemy => enemy != null && enemy.activeInHierarchy).Count;
+
+        Debug.Log($"Active enemies remaining: {activeEnemiesCount}"); // Debug log
+        return activeEnemiesCount == 0; // Return true if no active enemies
+    }
+
+
+    // Coroutine to handle the delay and then switch to the next valid state
+    private IEnumerator DelayAndSwitchState()
+    {
+        yield return new WaitForSeconds(1.0f); // Wait for 1 second
+
+        BattleState nextState = GetNextValidUnvisitedState();
+
+        if (nextState == BattleState.START)
+        {
+            visitedStates.Clear();
+            nextState = BattleState.ALLY1; // Start a new round
+        }
+
+        state = nextState;
+
+        if (state.ToString().StartsWith("ENEMY"))
+        {
+            // Trigger auto-attack for enemy turns
+            StartCoroutine(EnemyAttack());
+        }
+    }
+
+    private BattleState GetNextValidUnvisitedState()
     {
         BattleState[] allStates = {
-        BattleState.ALLY1, BattleState.ALLY3, BattleState.ALLY4, BattleState.ENEMY2, BattleState.ALLY2,
-        BattleState.ENEMY1, BattleState.ENEMY3
-    };
+            BattleState.ALLY1, BattleState.ALLY3, BattleState.ALLY4, BattleState.ENEMY2, BattleState.ALLY2,
+            BattleState.ENEMY1, BattleState.ENEMY3
+        };
 
         foreach (BattleState potentialState in allStates)
         {
-            if (!visitedStates.Contains(potentialState))
+            if (!visitedStates.Contains(potentialState) && IsStateValid(potentialState))
             {
                 return potentialState;
             }
@@ -95,67 +165,50 @@ public class BattleSystem : MonoBehaviour
         return BattleState.START;
     }
 
-
-    void SpawnPrefabs()
+    private bool IsStateValid(BattleState stateToCheck)
     {
-        // Ensure no errors occur if lists are uneven
-        int allyCount = Mathf.Min(Allies.Count, SpawnPointAllies.Count);
-        int enemyCount = Mathf.Min(Enemies.Count, SpawnPointEnemies.Count);
-
-        // Instantiate Allies
-        for (int i = 0; i < allyCount; i++)
+        if (stateToCheck.ToString().StartsWith("ALLY"))
         {
-            if (Allies[i] != null && i < SpawnPointAllies.Count)
-            {
-                Vector2 spawnPosition = SpawnPointAllies[i];
-                GameObject newAlly = Instantiate(Allies[i], spawnPosition, Quaternion.identity);
-                var mouseClick = newAlly.GetComponent<MouseClick>();
-                if (mouseClick != null)
-                {
-                    triggerDamageScript.AddAlly(mouseClick); // Add MouseClick to TriggerDamageScript
-                    Debug.Log($"Ally {i + 1} instantiated at {spawnPosition}");
-                }
-                else
-                {
-                    Debug.LogError($"Spawned ally at {spawnPosition} is missing a MouseClick component!");
-                }
-                InstantiatedAllies.Add(newAlly); // Add to the list of instantiated allies
-            }
-            else
-            {
-                Debug.LogWarning($"Ally {i + 1} or its spawn point is missing!");
-            }
+            int index = stateToCheck - BattleState.ALLY1; // Get index of the ally
+            return index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null;
+        }
+        else if (stateToCheck.ToString().StartsWith("ENEMY"))
+        {
+            int index = stateToCheck - BattleState.ENEMY1; // Get index of the enemy
+            return index >= 0 && index < InstantiatedEnemies.Count && InstantiatedEnemies[index] != null;
         }
 
-        // Instantiate Enemies
-        for (int i = 0; i < enemyCount; i++)
-        {
-            if (Enemies[i] != null && i < SpawnPointEnemies.Count)
-            {
-                Vector2 spawnPosition = SpawnPointEnemies[i];
-                GameObject newEnemy = Instantiate(Enemies[i], spawnPosition, Quaternion.identity);
-                var mouseClick = newEnemy.GetComponent<MouseClick>();
-                if (mouseClick != null)
-                {
-                    triggerDamageScript.AddAlly(mouseClick); // Add MouseClick to TriggerDamageScript
-                    Debug.Log($"Enemy {i + 1} instantiated at {spawnPosition}");
-                }
-                else
-                {
-                    Debug.LogError($"Spawned enemy at {spawnPosition} is missing a MouseClick component!");
-                }
-                InstantiatedEnemies.Add(newEnemy); // Add to the list of instantiated enemies
-            }
-            else
-            {
-                Debug.LogWarning($"Enemy {i + 1} or its spawn point is missing!");
-            }
-        }
+        return false; // Default: Invalid state
     }
 
 
+    void SpawnPrefabs()
+    {
+        for (int i = 0; i < Mathf.Min(Allies.Count, SpawnPointAllies.Count); i++)
+        {
+            Vector2 spawnPosition = SpawnPointAllies[i];
+            GameObject newAlly = Instantiate(Allies[i], spawnPosition, Quaternion.identity);
+            var mouseClick = newAlly.GetComponent<MouseClick>();
+            if (mouseClick != null)
+            {
+                triggerDamageScript.AddAlly(mouseClick);
+            }
+            InstantiatedAllies.Add(newAlly);
+        }
 
-    //if statements om te zien wie er aan de beurt is (turn highlight), later binden aan een cursor 
+        for (int i = 0; i < Mathf.Min(Enemies.Count, SpawnPointEnemies.Count); i++)
+        {
+            Vector2 spawnPosition = SpawnPointEnemies[i];
+            GameObject newEnemy = Instantiate(Enemies[i], spawnPosition, Quaternion.identity);
+            var mouseClick = newEnemy.GetComponent<MouseClick>();
+            if (mouseClick != null)
+            {
+                triggerDamageScript.AddEnemy(mouseClick);
+            }
+            InstantiatedEnemies.Add(newEnemy);
+        }
+    }
+
     private void HighlightTurn(BattleState currentState, int index, List<GameObject> entities)
     {
         if (index >= 0 && index < entities.Count && entities[index] != null)
@@ -163,6 +216,57 @@ public class BattleSystem : MonoBehaviour
             GameObject entity = entities[index];
             entity.GetComponent<SpriteRenderer>().color = (state == currentState) ? Color.yellow : Color.white;
         }
+    }
+
+    private IEnumerator EnemyAttack()
+    {
+        yield return new WaitForSeconds(1.0f); // Simulate delay before the enemy attacks
+
+        // Determine which enemy is taking the turn
+        int enemyIndex = state - BattleState.ENEMY1;
+        if (enemyIndex >= 0 && enemyIndex < InstantiatedEnemies.Count)
+        {
+            GameObject activeEnemy = InstantiatedEnemies[enemyIndex];
+
+            if (activeEnemy != null)
+            {
+                // Select a random ally to attack
+                GameObject targetAlly = GetRandomAlly();
+
+                if (targetAlly != null)
+                {
+                    // Perform damage on the target ally
+                    DamageSystem damageSystem = activeEnemy.GetComponent<DamageSystem>();
+                    if (damageSystem != null)
+                    {
+                        damageSystem.DamageTarget(targetAlly);
+                        Debug.Log($"{activeEnemy.name} attacked {targetAlly.name}!");
+                    }
+                }
+                else
+                {
+                    Debug.Log($"{activeEnemy.name} has no valid ally to attack.");
+                }
+            }
+        }
+
+        // Move to the next turn after the enemy attack
+        BattleStateSwitch();
+    }
+
+    // Method to get a random ally that is still alive
+    private GameObject GetRandomAlly()
+    {
+        // Filter out dead allies from the list
+        List<GameObject> validAllies = InstantiatedAllies.FindAll(ally => ally != null && ally.activeInHierarchy);
+
+        if (validAllies.Count > 0)
+        {
+            // Return a random valid ally
+            return validAllies[UnityEngine.Random.Range(0, validAllies.Count)];
+        }
+
+        return null; // No valid allies left
     }
 
 }
