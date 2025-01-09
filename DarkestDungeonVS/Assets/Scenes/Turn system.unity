@@ -552,6 +552,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 405819319}
     m_Modifications:
+    - target: {fileID: 451906582127973646, guid: b4148a419c3559246bf1b5d76146f6ee, type: 3}
+      propertyPath: mouseClickScripts.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 451906582127973646, guid: b4148a419c3559246bf1b5d76146f6ee, type: 3}
+      propertyPath: mouseClickScripts.Array.data[0]
+      value: 
+      objectReference: {fileID: 2355725947608757562, guid: e6349dd113602084f9fd37217498d722, type: 3}
+    - target: {fileID: 451906582127973646, guid: b4148a419c3559246bf1b5d76146f6ee, type: 3}
+      propertyPath: mouseClickScripts.Array.data[1]
+      value: 
+      objectReference: {fileID: -6153647152518515807, guid: 73cc99fe7beb7ed4d88333b41a107808, type: 3}
+    - target: {fileID: 451906582127973646, guid: b4148a419c3559246bf1b5d76146f6ee, type: 3}
+      propertyPath: mouseClickScripts.Array.data[2]
+      value: 
+      objectReference: {fileID: -7556098888582572090, guid: d730581b216901e43b47253f79497418, type: 3}
+    - target: {fileID: 451906582127973646, guid: b4148a419c3559246bf1b5d76146f6ee, type: 3}
+      propertyPath: mouseClickScripts.Array.data[3]
+      value: 
+      objectReference: {fileID: 2494777821748907587, guid: 3c2f091e4867c2e45a8e625da1b4e024, type: 3}
+    - target: {fileID: 451906582127973646, guid: b4148a419c3559246bf1b5d76146f6ee, type: 3}
+      propertyPath: mouseClickScripts.Array.data[4]
+      value: 
+      objectReference: {fileID: 4173381700652728117, guid: 8654bd32e1644914ea26eda198756d74, type: 3}
+    - target: {fileID: 451906582127973646, guid: b4148a419c3559246bf1b5d76146f6ee, type: 3}
+      propertyPath: mouseClickScripts.Array.data[5]
+      value: 
+      objectReference: {fileID: 4068039630245831494, guid: ae81ddc41e309ee43ae4829862c7f305, type: 3}
+    - target: {fileID: 451906582127973646, guid: b4148a419c3559246bf1b5d76146f6ee, type: 3}
+      propertyPath: mouseClickScripts.Array.data[6]
+      value: 
+      objectReference: {fileID: -3588666151067485888, guid: ac0c0990efd7ea24eb826955cc34b273, type: 3}
     - target: {fileID: 1748004643915071707, guid: b4148a419c3559246bf1b5d76146f6ee, type: 3}
       propertyPath: m_Name
       value: Test Button
@@ -914,6 +946,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Battle system
       objectReference: {fileID: 0}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Allies.Array.data[0]
+      value: 
+      objectReference: {fileID: 1938050844221934656, guid: e6349dd113602084f9fd37217498d722, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Allies.Array.data[1]
+      value: 
+      objectReference: {fileID: 5222158782714487252, guid: 73cc99fe7beb7ed4d88333b41a107808, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Allies.Array.data[2]
+      value: 
+      objectReference: {fileID: 2087783889394808300, guid: d730581b216901e43b47253f79497418, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Allies.Array.data[3]
+      value: 
+      objectReference: {fileID: 4989912156398029153, guid: 3c2f091e4867c2e45a8e625da1b4e024, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Enemies.Array.data[0]
+      value: 
+      objectReference: {fileID: 7252055624401936840, guid: 8654bd32e1644914ea26eda198756d74, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Enemies.Array.data[1]
+      value: 
+      objectReference: {fileID: 8169692968911247447, guid: ae81ddc41e309ee43ae4829862c7f305, type: 3}
+    - target: {fileID: 3049930428075222120, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
+      propertyPath: Enemies.Array.data[2]
+      value: 
+      objectReference: {fileID: 6045773956690367455, guid: ac0c0990efd7ea24eb826955cc34b273, type: 3}
     - target: {fileID: 4798195179099735291, guid: 99be649239346c646b9182fc54bf77aa, type: 3}
       propertyPath: m_RootOrder
       value: 1
