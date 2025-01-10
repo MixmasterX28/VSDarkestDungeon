@@ -28,6 +28,8 @@ public class BattleSystem : MonoBehaviour
 
     [SerializeField] List<BattleState> visitedStates = new List<BattleState>();
 
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,15 +55,11 @@ public class BattleSystem : MonoBehaviour
             return;
         }
 
-    }
-
-    public void BattleStateSwitch()
-    {
         // Prevent further state changes after WIN or LOSE
         if (state == BattleState.WIN || state == BattleState.LOSE)
         {
             Debug.Log($"Game Over: {state}");
-            return; // No more state transitions after the game ends
+           // return; // No more state transitions after the game ends
         }
 
         // Check for WIN or LOSE condition before switching the state
@@ -77,6 +75,11 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.WIN;
             return; // Early exit if the game is over
         }
+    }
+
+    public void BattleStateSwitch()
+    {
+       
 
         // Proceed with the normal state switching
         if (!visitedStates.Contains(state))
