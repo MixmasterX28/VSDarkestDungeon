@@ -37,9 +37,4 @@ public class TestHPText : MonoBehaviour
         textField.text = "HP: " + health.hp.ToString();
     }
 
-    public void EndMessage()
-    {
-        TextField.text = $"YOU {battleSystem.state}";
-
-    }
 }

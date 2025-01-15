@@ -74,10 +74,10 @@ public class BattleSystem : MonoBehaviour
         // Prevent further state changes after WIN or LOSE
         if (state == BattleState.WIN || state == BattleState.LOSE)
         {
-            TextField.text = $"YOU {state}";
+            TextField.text = $"YOU {state} <br><br>Thanks for playing our demo! If you want you can play again or just quit.";
             EndButtons.SetActive(true); // Enable the buttons
             Debug.Log($"Game Over: {state}");
-           // return; // No more state transitions after the game ends
+            return; // No more state transitions after the game ends
         }
 
         // Check for WIN or LOSE condition before switching the state
