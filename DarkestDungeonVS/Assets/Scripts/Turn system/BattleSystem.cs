@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -28,6 +29,11 @@ public class BattleSystem : MonoBehaviour
 
     [SerializeField] List<BattleState> visitedStates = new List<BattleState>();
 
+    private TMP_Text TextField;  // References to the TMP_Text component
+
+    public GameObject EndButtons;
+
+
 
 
     // Start is called before the first frame update
@@ -37,6 +43,16 @@ public class BattleSystem : MonoBehaviour
         Debug.Log("Battle START!");
         triggerDamageScript = FindAnyObjectByType<TriggerDamageScript>();
         SpawnPrefabs();
+        EndButtons.SetActive(false);
+
+        if (TextField == null)
+        {
+            TextField = GameObject.Find("EndText")?.GetComponent<TMP_Text>();
+            if (TextField == null)
+            {
+                Debug.LogError("TextField is not assigned! Ensure a TMP_Text component is named 'EndText' or assigned in the Inspector.");
+            }
+        }
     }
 
     private void Update()
@@ -58,6 +74,8 @@ public class BattleSystem : MonoBehaviour
         // Prevent further state changes after WIN or LOSE
         if (state == BattleState.WIN || state == BattleState.LOSE)
         {
+            TextField.text = $"YOU {state}";
+            EndButtons.SetActive(true); // Enable the buttons
             Debug.Log($"Game Over: {state}");
            // return; // No more state transitions after the game ends
         }
