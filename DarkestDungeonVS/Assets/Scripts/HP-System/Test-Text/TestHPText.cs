@@ -5,6 +5,7 @@ public class TestHPText : MonoBehaviour
 {
     private HPSystem Health;  // References to the HPSystem component
     private TMP_Text TextField;  // References to the TMP_Text component
+    private BattleSystem BattleSystem;
     public HPSystem health
     {
         get { return Health; }
@@ -15,6 +16,12 @@ public class TestHPText : MonoBehaviour
     {
         get { return TextField; }
         set { TextField = value; }
+    }
+
+    public BattleSystem battleSystem
+    {
+        get { return BattleSystem; }
+        set { BattleSystem = value; }
     }
 
     public void HealthCheck() // Makes sure the HP won't go below 0
@@ -28,5 +35,11 @@ public class TestHPText : MonoBehaviour
     {
         // Update the UI text with the current HP value
         textField.text = "HP: " + health.hp.ToString();
+    }
+
+    public void EndMessage()
+    {
+        TextField.text = $"YOU {battleSystem.state}";
+
     }
 }

@@ -12,7 +12,7 @@ public class MouseClick : MonoBehaviour
     {
         if (damageSystem == null)
         {
-            damageSystem = GetComponent<DamageSystem>(); // Is misschien optioneel, maar ik behoud het even tot we zeker weten dat we het niet nodig hebben
+            damageSystem = GetComponent<DamageSystem>(); // Optional fallback
         }
     }
 
@@ -20,17 +20,17 @@ public class MouseClick : MonoBehaviour
     {
         if (myState == State.Deactive)
         {
-            GetComponent<Renderer>().material.color = Color.white; // Deactive state that keeps the object color white
+            GetComponent<Renderer>().material.color = Color.white; // Deactive state keeps the object color white
         }
         else if (myState == State.Active)
         {
-            GetComponent<Renderer>().material.color = Color.red; // Active state that makes the object red
+            GetComponent<Renderer>().material.color = Color.red; // Active state makes the object red
 
             if (Input.GetMouseButtonDown(0))
             {
                 if (damageSystem != null)
                 {
-                    damageSystem.Damage();
+                    damageSystem.DamageTarget(gameObject); // Pass the current gameObject as the target
                     this.enabled = false; // Deactivate the script after use
                     OnMouseClickUsed?.Invoke(); // Notify that the script was used
                 }
@@ -45,6 +45,6 @@ public class MouseClick : MonoBehaviour
 
     private void OnMouseExit()
     {
-        myState = State.Deactive; // Deactivates the object when the mouse when the mouse hovers away from the object
+        myState = State.Deactive; // Deactivates the object when the mouse hovers away
     }
 }
