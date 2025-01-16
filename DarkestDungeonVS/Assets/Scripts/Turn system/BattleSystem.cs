@@ -9,7 +9,8 @@ public enum BattleState { START, ALLY1, ALLY2, ALLY3, ALLY4, ENEMY1, ENEMY2, ENE
 
 public class BattleSystem : MonoBehaviour
 {
-    
+    [SerializeField] List<GameObject> Indicators = new List<GameObject>();
+
     public BattleState state;
 
     public static Action NextTurn;
@@ -41,8 +42,10 @@ public class BattleSystem : MonoBehaviour
         Debug.Log("Battle START!");
         triggerDamageScript = FindAnyObjectByType<TriggerDamageScript>();
         SpawnPrefabs();
-
-
+        foreach (var indicator in Indicators)
+        {
+            indicator.SetActive(false);
+        }
     }
 
     private void Update()
@@ -59,32 +62,39 @@ public class BattleSystem : MonoBehaviour
         {
             case BattleState.START:
                 state = BattleState.ALLY1;
+                if(Indicators.Count > 0) { Indicators[0].SetActive(true); }
                 UIvestal.SetActive(false);
                 UIplague.SetActive(true);
                 break;
             case BattleState.ALLY1:
                 state = BattleState.ALLY2;
+                if (Indicators.Count > 1) { Indicators[1].SetActive(true); }
                 UIplague.SetActive(false);
                 UIcrusader.SetActive(true);
                 break;
             case BattleState.ALLY2:
                 state = BattleState.ALLY3;
+                if (Indicators.Count > 2) { Indicators[2].SetActive(true); }
                 UIcrusader.SetActive(false);
                 UIhighway.SetActive(true);
                 break;
             case BattleState.ALLY3:
                 state = BattleState.ALLY4;
+                if (Indicators.Count > 3) { Indicators[3].SetActive(true); }
                 UIhighway.SetActive(false);
                 UIvestal.SetActive(true);
                 break;
             case BattleState.ALLY4:
                 state = BattleState.ENEMY1;
+                if (Indicators.Count > 4) { Indicators[4].SetActive(true); }
                 break;
             case BattleState.ENEMY1:
                 state = BattleState.ENEMY2;
+                if (Indicators.Count > 5) { Indicators[5].SetActive(true); }
                 break;
             case BattleState.ENEMY2:
                 state = BattleState.ENEMY3;
+                if (Indicators.Count > 6) { Indicators[6].SetActive(true); }
                 break;
             case BattleState.ENEMY3:
                 state = BattleState.START;
@@ -158,12 +168,14 @@ public class BattleSystem : MonoBehaviour
 
 
     //if statements om te zien wie er aan de beurt is (turn highlight), later binden aan een cursor 
+
     void Turn1(int index)
     {
         if(state == BattleState.ALLY1 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
         {
             GameObject changeInstantie = InstantiatedAllies[index];
             changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
+            
         }
         else
         {
