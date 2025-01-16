@@ -24,6 +24,8 @@ public class TestHPText : MonoBehaviour
         set { BattleSystem = value; }
     }
 
+
+
     public void HealthCheck() // Makes sure the HP won't go below 0
     {
         if (health.hp <= 0)
