@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class PlagueDrBar : HealthBar
 {
     private void Start()
@@ -9,22 +5,19 @@ public class PlagueDrBar : HealthBar
         slider.maxValue = bs.ExiastingAllies[3].GetComponent<PlagueDoctorHP>().hp;
         slider.value = bs.ExiastingAllies[3].GetComponent<PlagueDoctorHP>().hp;
         fill.color = gradient.Evaluate(slider.normalizedValue);
-
-
-        Debug.Log(bs.ExiastingAllies[3].GetComponent<PlagueDoctorHP>().hp);
-
     }
 
     private void Update()
     {
-        Debug.Log(bs.ExiastingAllies[3].GetComponent<PlagueDoctorHP>().hp);
         UpdateHealthBar();
-
+        if (slider.value == 0)
+        {
+            GoAway();
+        }
     }
 
     public void UpdateHealthBar()
     {
-        Debug.Log($"HealthBar initialized. Max HP: {slider.maxValue}, Current HP: {slider.value}");
         slider.value = bs.ExiastingAllies[3].GetComponent<PlagueDoctorHP>().hp;
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
