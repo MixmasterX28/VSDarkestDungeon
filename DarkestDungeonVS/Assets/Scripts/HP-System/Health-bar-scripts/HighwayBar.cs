@@ -1,24 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+public class HighwayBar : HealthBar
 {
-    public HighwayManHealth health;  // Reference to the health system
-    public Slider slider;
-    public Gradient gradient;
-    public Image fill;
-
-
-    public BattleSystem bs;
-
     private void Start()
     {
-        if (health == null)
-        {
-            Debug.LogError("No Health System assigned!");
-            return;
-        }
-
         slider.maxValue = bs.ExiastingAllies[2].GetComponent<HighwayManHealth>().hp;
         slider.value = bs.ExiastingAllies[2].GetComponent<HighwayManHealth>().hp;
         fill.color = gradient.Evaluate(slider.normalizedValue);
@@ -41,5 +28,4 @@ public class HealthBar : MonoBehaviour
         slider.value = bs.ExiastingAllies[2].GetComponent<HighwayManHealth>().hp;
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
-
 }

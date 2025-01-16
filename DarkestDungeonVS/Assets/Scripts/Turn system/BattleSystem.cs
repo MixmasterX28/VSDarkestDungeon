@@ -205,6 +205,10 @@ public class BattleSystem : MonoBehaviour
 
     public List<GameObject> ExiastingAllies { get { return existingAllies; } }
 
+    private List<GameObject> existingEnemies = new List<GameObject>();
+
+    public List<GameObject> ExiastingEnemies { get { return existingEnemies; } }
+
     void SpawnPrefabs()
     {
         for (int i = 0; i < Mathf.Min(Allies.Count, SpawnPointAllies.Count); i++)
@@ -226,6 +230,10 @@ public class BattleSystem : MonoBehaviour
         {
             Vector2 spawnPosition = SpawnPointEnemies[i];
             GameObject newEnemy = Instantiate(Enemies[i], spawnPosition, Quaternion.identity);
+
+            existingEnemies.Add(newEnemy);
+
+
             var mouseClick = newEnemy.GetComponent<MouseClick>();
             if (mouseClick != null)
             {
