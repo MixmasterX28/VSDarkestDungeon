@@ -2,9 +2,7 @@ public class HighwayBar : HealthBar
 {
     private void Start()
     {
-        slider.maxValue = bs.ExiastingAllies[2].GetComponent<HighwayManHealth>().hp;
-        slider.value = bs.ExiastingAllies[2].GetComponent<HighwayManHealth>().hp;
-        fill.color = gradient.Evaluate(slider.normalizedValue);
+        slider.maxValue = 23;
     }
 
     private void Update()

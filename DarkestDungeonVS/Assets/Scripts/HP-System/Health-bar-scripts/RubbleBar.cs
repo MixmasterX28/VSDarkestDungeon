@@ -2,9 +2,7 @@ public class RubbleBar : HealthBar
 {
     private void Start()
     {
-        slider.maxValue = bs.ExiastingEnemies[0].GetComponent<RabbleHealth>().hp;
-        slider.value = bs.ExiastingEnemies[0].GetComponent<RabbleHealth>().hp;
-        fill.color = gradient.Evaluate(slider.normalizedValue);
+        slider.maxValue = 8;
     }
 
     private void Update()

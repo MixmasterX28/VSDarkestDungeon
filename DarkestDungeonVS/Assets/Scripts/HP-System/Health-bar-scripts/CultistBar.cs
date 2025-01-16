@@ -2,9 +2,7 @@ public class CultistBar : HealthBar
 {
     private void Start()
     {
-        slider.maxValue = bs.ExiastingEnemies[2].GetComponent<Acolyte>().hp;
-        slider.value = bs.ExiastingEnemies[2].GetComponent<Acolyte>().hp;
-        fill.color = gradient.Evaluate(slider.normalizedValue);
+        slider.maxValue = 13;
     }
 
     private void Update()

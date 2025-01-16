@@ -2,9 +2,7 @@ public class SoldierBar : HealthBar
 {
     private void Start()
     {
-        slider.maxValue = bs.ExiastingEnemies[1].GetComponent<SoldierHealth>().hp;
-        slider.value = bs.ExiastingEnemies[1].GetComponent<SoldierHealth>().hp;
-        fill.color = gradient.Evaluate(slider.normalizedValue);
+        slider.maxValue = 10;
     }
 
     private void Update()

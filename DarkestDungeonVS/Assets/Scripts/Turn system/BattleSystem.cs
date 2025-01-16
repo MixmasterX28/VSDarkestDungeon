@@ -40,7 +40,6 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
         state = BattleState.START;
-        Debug.Log("Battle START!");
         triggerDamageScript = FindAnyObjectByType<TriggerDamageScript>();
         SpawnPrefabs();
         EndButtons.SetActive(false);
@@ -48,10 +47,6 @@ public class BattleSystem : MonoBehaviour
         if (TextField == null)
         {
             TextField = GameObject.Find("EndText")?.GetComponent<TMP_Text>();
-            if (TextField == null)
-            {
-                Debug.LogError("TextField is not assigned! Ensure a TMP_Text component is named 'EndText' or assigned in the Inspector.");
-            }
         }
     }
 
@@ -76,20 +71,17 @@ public class BattleSystem : MonoBehaviour
         {
             TextField.text = $"YOU {state} <br><br>Thanks for playing our demo! If you want you can play again or just quit.";
             EndButtons.SetActive(true); // Enable the buttons
-            Debug.Log($"Game Over: {state}");
             return; // No more state transitions after the game ends
         }
 
         // Check for WIN or LOSE condition before switching the state
         if (IsAlliesDefeated())
         {
-            Debug.Log("All allies are defeated. YOU LOSE!");
             state = BattleState.LOSE;
             return; // Early exit if the game is over
         }
         else if (IsEnemiesDefeated())
         {
-            Debug.Log("All enemies are defeated. YOU WIN!");
             state = BattleState.WIN;
             return; // Early exit if the game is over
         }
@@ -140,7 +132,6 @@ public class BattleSystem : MonoBehaviour
         // Get count of active enemies
         int activeEnemiesCount = InstantiatedEnemies.FindAll(enemy => enemy != null && enemy.activeInHierarchy).Count;
 
-        Debug.Log($"Active enemies remaining: {activeEnemiesCount}"); // Debug log
         return activeEnemiesCount == 0; // Return true if no active enemies
     }
 

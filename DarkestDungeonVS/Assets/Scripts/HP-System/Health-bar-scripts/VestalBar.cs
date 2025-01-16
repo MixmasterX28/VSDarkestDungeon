@@ -2,9 +2,7 @@ public class VestalBar : HealthBar
 {
     private void Start()
     {
-        slider.maxValue = bs.ExiastingAllies[1].GetComponent<VestalHealth>().hp;
-        slider.value = bs.ExiastingAllies[1].GetComponent<VestalHealth>().hp;
-        fill.color = gradient.Evaluate(slider.normalizedValue);
+        slider.maxValue = 24;
     }
 
     private void Update()
