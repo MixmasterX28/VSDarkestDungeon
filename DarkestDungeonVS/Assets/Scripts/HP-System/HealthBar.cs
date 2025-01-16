@@ -8,34 +8,38 @@ public class HealthBar : MonoBehaviour
     public Gradient gradient;
     public Image fill;
 
+
+    public BattleSystem bs;
+
     private void Start()
     {
-        // Find health system if it's not assigned
         if (health == null)
         {
-            health = FindObjectOfType<HighwayManHealth>();  // Find the health system in the scene
-            if (health == null)
-            {
-                Debug.LogError("No Health System found in the scene!");
-                return;
-            }
+            Debug.LogError("No Health System assigned!");
+            return;
         }
 
-        // Initialize the slider with the health system
-        slider.maxValue = health.hp;  // Assuming you have maxHealth in your HighwayManHealth script
-        slider.value = health.hp;
+        slider.maxValue = bs.ExiastingAllies[2].GetComponent<HighwayManHealth>().hp;
+        slider.value = bs.ExiastingAllies[2].GetComponent<HighwayManHealth>().hp;
         fill.color = gradient.Evaluate(slider.normalizedValue);
 
-        // Subscribe to health changes
-        
-        Debug.Log($"HealthBar initialized. Max HP: {slider.maxValue}, Current HP: {slider.value}");
+
+        Debug.Log(bs.ExiastingAllies[2].GetComponent<HighwayManHealth>().hp);
+
     }
 
-
-    // Method to update the health bar value and color
-    private void UpdateHealthBar()
+    private void Update()
     {
-        slider.value = health.hp;
+        Debug.Log(bs.ExiastingAllies[2].GetComponent<HighwayManHealth>().hp);
+        UpdateHealthBar();
+
+    }
+
+    public void UpdateHealthBar()
+    {
+        Debug.Log($"HealthBar initialized. Max HP: {slider.maxValue}, Current HP: {slider.value}");
+        slider.value = bs.ExiastingAllies[2].GetComponent<HighwayManHealth>().hp;
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
+
 }

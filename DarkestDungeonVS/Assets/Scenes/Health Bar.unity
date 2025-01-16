@@ -434,7 +434,7 @@ MonoBehaviour:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 0, a: 1}
     key1: {r: 1, g: 0.72231126, b: 0, a: 1}
-    key2: {r: 1, g: 0.10163639, b: 0, a: 0}
+    key2: {r: 1, g: 0.10196079, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -461,6 +461,7 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   fill: {fileID: 2089839211}
+  bs: {fileID: 1853556949}
 --- !u!114 &640202280
 MonoBehaviour:
   m_ObjectHideFlags: 0

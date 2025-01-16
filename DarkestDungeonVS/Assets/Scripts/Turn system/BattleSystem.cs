@@ -201,7 +201,9 @@ public class BattleSystem : MonoBehaviour
 
         return false; // Default: Invalid state
     }
+    private List<GameObject> existingAllies = new List<GameObject>();
 
+    public List<GameObject> ExiastingAllies { get { return existingAllies; } }
 
     void SpawnPrefabs()
     {
@@ -209,6 +211,9 @@ public class BattleSystem : MonoBehaviour
         {
             Vector2 spawnPosition = SpawnPointAllies[i];
             GameObject newAlly = Instantiate(Allies[i], spawnPosition, Quaternion.identity);
+
+            existingAllies.Add(newAlly);
+
             var mouseClick = newAlly.GetComponent<MouseClick>();
             if (mouseClick != null)
             {
