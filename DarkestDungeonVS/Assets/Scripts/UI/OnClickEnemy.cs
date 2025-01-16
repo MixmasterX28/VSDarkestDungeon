@@ -15,11 +15,13 @@ public class OnClickEnemy : MonoBehaviour
     }
     //public void PressedSoldier() //Als je op de skelly clicked dan komt de monstermanual
     //{
-    //    if (RabbleUI.activeSelf) {
+    //    if (RabbleUI.activeSelf)
+    //    {
     //        RabbleUI.SetActive(false);
     //        SoldierUI.SetActive(true);
     //    }
-    //    else if (CultistUI.activeSelf) {
+    //    else if (CultistUI.activeSelf)
+    //    {
     //        CultistUI.SetActive(false);
     //        SoldierUI.SetActive(true);
     //    }
@@ -44,25 +46,25 @@ public class OnClickEnemy : MonoBehaviour
     //    {
     //        RabbleUI.SetActive(true);
     //    }
-   
-    //}
 
-    //public void PressedCultist() //Als je op de cultist clicked dan komt de monstermanual
-    //{
-    //    if (RabbleUI.activeSelf)
-    //    {
-    //        RabbleUI.SetActive(false);
-    //        CultistUI.SetActive(true);
-    //    }
-    //    else if (SoldierUI.activeSelf)
-    //    {
-    //        SoldierUI.SetActive(false);
-    //        CultistUI.SetActive(true);
-    //    }
-    //    else
-    //    {
-    //        CultistUI.SetActive(true);
-    //    }
-      
-    //}
-}
+        //}
+
+        //public void PressedCultist() //Als je op de cultist clicked dan komt de monstermanual
+        //{
+        //    if (RabbleUI.activeSelf)
+        //    {
+        //        RabbleUI.SetActive(false);
+        //        CultistUI.SetActive(true);
+        //    }
+        //    else if (SoldierUI.activeSelf)
+        //    {
+        //        SoldierUI.SetActive(false);
+        //        CultistUI.SetActive(true);
+        //    }
+        //    else
+        //    {
+        //        CultistUI.SetActive(true);
+        //    }
+
+        //}
+    }
