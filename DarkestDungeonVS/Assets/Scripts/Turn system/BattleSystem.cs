@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -9,8 +10,6 @@ public enum BattleState { START, ALLY1, ALLY2, ALLY3, ALLY4, ENEMY1, ENEMY2, ENE
 
 public class BattleSystem : MonoBehaviour
 {
-    [SerializeField] List<GameObject> Indicators = new List<GameObject>();
-
     public BattleState state;
 
     public static Action NextTurn;
@@ -20,19 +19,21 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] List<GameObject> Allies = new List<GameObject>();
     [SerializeField] List<GameObject> Enemies = new List<GameObject>();
 
-    private List<GameObject> InstantiatedAllies = new List<GameObject>();
-    private List<GameObject> InstantiatedEnemies = new List<GameObject>();
-
+    [SerializeField] List<GameObject> InstantiatedAllies = new List<GameObject>();
+    [SerializeField] List<GameObject> InstantiatedEnemies = new List<GameObject>();
 
     [SerializeField] List<Vector2> SpawnPointAllies = new List<Vector2>();
     [SerializeField] List<Vector2> SpawnPointEnemies = new List<Vector2>();
 
     public Color CurrentTurnColor = Color.yellow;
 
-    [SerializeField] GameObject UIplague;
-    [SerializeField] GameObject UIcrusader;
-    [SerializeField] GameObject UIhighway;
-    [SerializeField] GameObject UIvestal;
+    [SerializeField] List<BattleState> visitedStates = new List<BattleState>();
+
+    private TMP_Text TextField;  // References to the TMP_Text component
+
+    public GameObject EndButtons;
+
+
 
 
     // Start is called before the first frame update
@@ -42,227 +43,264 @@ public class BattleSystem : MonoBehaviour
         Debug.Log("Battle START!");
         triggerDamageScript = FindAnyObjectByType<TriggerDamageScript>();
         SpawnPrefabs();
-        foreach (var indicator in Indicators)
+        EndButtons.SetActive(false);
+
+        if (TextField == null)
         {
-            indicator.SetActive(false);
+            TextField = GameObject.Find("EndText")?.GetComponent<TMP_Text>();
+            if (TextField == null)
+            {
+                Debug.LogError("TextField is not assigned! Ensure a TMP_Text component is named 'EndText' or assigned in the Inspector.");
+            }
         }
     }
 
     private void Update()
     {
-        Turn1(0);
-        Turn2(1);
-        Turn3(2);
-        Turn4(3);
+        HighlightTurn(BattleState.ALLY1, 0, InstantiatedAllies);
+        HighlightTurn(BattleState.ALLY2, 1, InstantiatedAllies);
+        HighlightTurn(BattleState.ALLY3, 2, InstantiatedAllies);
+        HighlightTurn(BattleState.ALLY4, 3, InstantiatedAllies);
+        HighlightTurn(BattleState.ENEMY1, 0, InstantiatedEnemies);
+        HighlightTurn(BattleState.ENEMY2, 1, InstantiatedEnemies);
+        HighlightTurn(BattleState.ENEMY3, 2, InstantiatedEnemies);
+
+        if (state == BattleState.START)
+        {
+            StartCoroutine(DelayAndSwitchState());
+            return;
+        }
+
+        // Prevent further state changes after WIN or LOSE
+        if (state == BattleState.WIN || state == BattleState.LOSE)
+        {
+            TextField.text = $"YOU {state} <br><br>Thanks for playing our demo! If you want you can play again or just quit.";
+            EndButtons.SetActive(true); // Enable the buttons
+            Debug.Log($"Game Over: {state}");
+            return; // No more state transitions after the game ends
+        }
+
+        // Check for WIN or LOSE condition before switching the state
+        if (IsAlliesDefeated())
+        {
+            Debug.Log("All allies are defeated. YOU LOSE!");
+            state = BattleState.LOSE;
+            return; // Early exit if the game is over
+        }
+        else if (IsEnemiesDefeated())
+        {
+            Debug.Log("All enemies are defeated. YOU WIN!");
+            state = BattleState.WIN;
+            return; // Early exit if the game is over
+        }
     }
 
-   public void BattleStateSwitch()
+    public void BattleStateSwitch()
     {
-        switch (state)
+       
+
+        // Proceed with the normal state switching
+        if (!visitedStates.Contains(state))
         {
-            case BattleState.START:
-                state = BattleState.ALLY1;
-                if(Indicators.Count > 0) { Indicators[0].SetActive(true); }
-                UIvestal.SetActive(false);
-                UIplague.SetActive(true);
-                break;
-            case BattleState.ALLY1:
-                state = BattleState.ALLY2;
-                if (Indicators.Count > 1) { Indicators[1].SetActive(true); }
-                UIplague.SetActive(false);
-                UIcrusader.SetActive(true);
-                break;
-            case BattleState.ALLY2:
-                state = BattleState.ALLY3;
-                if (Indicators.Count > 2) { Indicators[2].SetActive(true); }
-                UIcrusader.SetActive(false);
-                UIhighway.SetActive(true);
-                break;
-            case BattleState.ALLY3:
-                state = BattleState.ALLY4;
-                if (Indicators.Count > 3) { Indicators[3].SetActive(true); }
-                UIhighway.SetActive(false);
-                UIvestal.SetActive(true);
-                break;
-            case BattleState.ALLY4:
-                state = BattleState.ENEMY1;
-                if (Indicators.Count > 4) { Indicators[4].SetActive(true); }
-                break;
-            case BattleState.ENEMY1:
-                state = BattleState.ENEMY2;
-                if (Indicators.Count > 5) { Indicators[5].SetActive(true); }
-                break;
-            case BattleState.ENEMY2:
-                state = BattleState.ENEMY3;
-                if (Indicators.Count > 6) { Indicators[6].SetActive(true); }
-                break;
-            case BattleState.ENEMY3:
-                state = BattleState.START;
-                break;
-            case BattleState.WIN:
-                break;
-            case BattleState.LOSE:
-                break;
-            default:
-                break;
+            visitedStates.Add(state);
         }
+
+        BattleState nextState = GetNextValidUnvisitedState();
+
+        if (nextState == BattleState.START)
+        {
+            visitedStates.Clear();
+            GetNextValidUnvisitedState();
         }
+
+        // If the current state is START, wait before moving to the next state
+        if (state == BattleState.START)
+        {
+            StartCoroutine(DelayAndSwitchState());
+            return;
+        }
+
+        state = nextState;
+
+        if (state.ToString().StartsWith("ENEMY"))
+        {
+            // Trigger auto-attack for enemy turns
+            StartCoroutine(EnemyAttack());
+        }
+    }
+
+    private bool IsAlliesDefeated()
+    {
+        // Check if there are no active allies left
+        return InstantiatedAllies.FindAll(ally => ally != null && ally.activeInHierarchy).Count == 0;
+    }
+
+    private bool IsEnemiesDefeated()
+    {
+        // Get count of active enemies
+        int activeEnemiesCount = InstantiatedEnemies.FindAll(enemy => enemy != null && enemy.activeInHierarchy).Count;
+
+        Debug.Log($"Active enemies remaining: {activeEnemiesCount}"); // Debug log
+        return activeEnemiesCount == 0; // Return true if no active enemies
+    }
+
+
+    // Coroutine to handle the delay and then switch to the next valid state
+    private IEnumerator DelayAndSwitchState()
+    {
+        yield return new WaitForSeconds(1.0f); // Wait for 1 second
+
+        BattleState nextState = GetNextValidUnvisitedState();
+
+        if (nextState == BattleState.START)
+        {
+            visitedStates.Clear();
+            nextState = BattleState.ALLY1; // Start a new round
+        }
+
+        state = nextState;
+
+        if (state.ToString().StartsWith("ENEMY"))
+        {
+            // Trigger auto-attack for enemy turns
+            StartCoroutine(EnemyAttack());
+        }
+    }
+
+    private BattleState GetNextValidUnvisitedState()
+    {
+        BattleState[] allStates = {
+            BattleState.ALLY1, BattleState.ALLY3, BattleState.ALLY4, BattleState.ENEMY2, BattleState.ALLY2,
+            BattleState.ENEMY1, BattleState.ENEMY3
+        };
+
+        foreach (BattleState potentialState in allStates)
+        {
+            if (!visitedStates.Contains(potentialState) && IsStateValid(potentialState))
+            {
+                return potentialState;
+            }
+        }
+
+        // Return START to indicate all states have been visited
+        return BattleState.START;
+    }
+
+    private bool IsStateValid(BattleState stateToCheck)
+    {
+        if (stateToCheck.ToString().StartsWith("ALLY"))
+        {
+            int index = stateToCheck - BattleState.ALLY1; // Get index of the ally
+            return index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null;
+        }
+        else if (stateToCheck.ToString().StartsWith("ENEMY"))
+        {
+            int index = stateToCheck - BattleState.ENEMY1; // Get index of the enemy
+            return index >= 0 && index < InstantiatedEnemies.Count && InstantiatedEnemies[index] != null;
+        }
+
+        return false; // Default: Invalid state
+    }
+    private List<GameObject> existingAllies = new List<GameObject>();
+
+    public List<GameObject> ExiastingAllies { get { return existingAllies; } }
+
+    private List<GameObject> existingEnemies = new List<GameObject>();
+
+    public List<GameObject> ExiastingEnemies { get { return existingEnemies; } }
 
     void SpawnPrefabs()
     {
-        // Ensure no errors occur if lists are uneven
-        int allyCount = Mathf.Min(Allies.Count, SpawnPointAllies.Count);
-        int enemyCount = Mathf.Min(Enemies.Count, SpawnPointEnemies.Count);
-
-        // Instantiate Allies
-        for (int i = 0; i < allyCount; i++)
+        for (int i = 0; i < Mathf.Min(Allies.Count, SpawnPointAllies.Count); i++)
         {
-            if (Allies[i] != null && i < SpawnPointAllies.Count)
+            Vector2 spawnPosition = SpawnPointAllies[i];
+            GameObject newAlly = Instantiate(Allies[i], spawnPosition, Quaternion.identity);
+
+            existingAllies.Add(newAlly);
+
+            var mouseClick = newAlly.GetComponent<MouseClick>();
+            if (mouseClick != null)
             {
-                Vector2 spawnPosition = SpawnPointAllies[i];
-                GameObject newAlly = Instantiate(Allies[i], spawnPosition, Quaternion.identity);
-                var mouseClick = newAlly.GetComponent<MouseClick>();
-                if (mouseClick != null)
+                triggerDamageScript.AddAlly(mouseClick);
+            }
+            InstantiatedAllies.Add(newAlly);
+        }
+
+        for (int i = 0; i < Mathf.Min(Enemies.Count, SpawnPointEnemies.Count); i++)
+        {
+            Vector2 spawnPosition = SpawnPointEnemies[i];
+            GameObject newEnemy = Instantiate(Enemies[i], spawnPosition, Quaternion.identity);
+
+            existingEnemies.Add(newEnemy);
+
+
+            var mouseClick = newEnemy.GetComponent<MouseClick>();
+            if (mouseClick != null)
+            {
+                triggerDamageScript.AddEnemy(mouseClick);
+            }
+            InstantiatedEnemies.Add(newEnemy);
+        }
+    }
+
+    private void HighlightTurn(BattleState currentState, int index, List<GameObject> entities)
+    {
+        if (index >= 0 && index < entities.Count && entities[index] != null)
+        {
+            GameObject entity = entities[index];
+            entity.GetComponent<SpriteRenderer>().color = (state == currentState) ? Color.yellow : Color.white;
+        }
+    }
+
+    private IEnumerator EnemyAttack()
+    {
+        yield return new WaitForSeconds(1.0f); // Simulate delay before the enemy attacks
+
+        // Determine which enemy is taking the turn
+        int enemyIndex = state - BattleState.ENEMY1;
+        if (enemyIndex >= 0 && enemyIndex < InstantiatedEnemies.Count)
+        {
+            GameObject activeEnemy = InstantiatedEnemies[enemyIndex];
+
+            if (activeEnemy != null)
+            {
+                // Select a random ally to attack
+                GameObject targetAlly = GetRandomAlly();
+
+                if (targetAlly != null)
                 {
-                    triggerDamageScript.AddAlly(mouseClick); // Add MouseClick to TriggerDamageScript
-                    Debug.Log($"Ally {i + 1} instantiated at {spawnPosition}");
+                    // Perform damage on the target ally
+                    DamageSystem damageSystem = activeEnemy.GetComponent<DamageSystem>();
+                    if (damageSystem != null)
+                    {
+                        damageSystem.DamageTarget(targetAlly);
+                        Debug.Log($"{activeEnemy.name} attacked {targetAlly.name}!");
+                    }
                 }
                 else
                 {
-                    Debug.LogError($"Spawned ally at {spawnPosition} is missing a MouseClick component!");
+                    Debug.Log($"{activeEnemy.name} has no valid ally to attack.");
                 }
-                InstantiatedAllies.Add(newAlly); // Add to the list of instantiated allies
-            }
-            else
-            {
-                Debug.LogWarning($"Ally {i + 1} or its spawn point is missing!");
             }
         }
 
-        // Instantiate Enemies
-        for (int i = 0; i < enemyCount; i++)
-        {
-            if (Enemies[i] != null && i < SpawnPointEnemies.Count)
-            {
-                Vector2 spawnPosition = SpawnPointEnemies[i];
-                GameObject newEnemy = Instantiate(Enemies[i], spawnPosition, Quaternion.identity);
-                var mouseClick = newEnemy.GetComponent<MouseClick>();
-                if (mouseClick != null)
-                {
-                    triggerDamageScript.AddAlly(mouseClick); // Add MouseClick to TriggerDamageScript
-                    Debug.Log($"Enemy {i + 1} instantiated at {spawnPosition}");
-                }
-                else
-                {
-                    Debug.LogError($"Spawned enemy at {spawnPosition} is missing a MouseClick component!");
-                }
-                InstantiatedEnemies.Add(newEnemy); // Add to the list of instantiated enemies
-            }
-            else
-            {
-                Debug.LogWarning($"Enemy {i + 1} or its spawn point is missing!");
-            }
-        }
+        // Move to the next turn after the enemy attack
+        BattleStateSwitch();
     }
 
-
-
-    //if statements om te zien wie er aan de beurt is (turn highlight), later binden aan een cursor 
-
-    void Turn1(int index)
+    // Method to get a random ally that is still alive
+    private GameObject GetRandomAlly()
     {
-        if(state == BattleState.ALLY1 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-            
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }    
+        // Filter out dead allies from the list
+        List<GameObject> validAllies = InstantiatedAllies.FindAll(ally => ally != null && ally.activeInHierarchy);
 
-    void Turn2(int index)
-    {
-        if (state == BattleState.ALLY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
+        if (validAllies.Count > 0)
         {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
+            // Return a random valid ally
+            return validAllies[UnityEngine.Random.Range(0, validAllies.Count)];
         }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
-    void Turn3(int index)
-    {
-        if (state == BattleState.ALLY3 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
+
+        return null; // No valid allies left
     }
 
-    void Turn4(int index)
-    {
-        if (state == BattleState.ALLY4 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
-
-    void Turn5(int index)
-    {
-        if (state == BattleState.ENEMY1 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
-
-    void Turn6(int index)
-    {
-        if (state == BattleState.ENEMY2 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
-    void Turn7(int index)
-    {
-        if (state == BattleState.ENEMY3 && index >= 0 && index < InstantiatedAllies.Count && InstantiatedAllies[index] != null)
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else
-        {
-            GameObject changeInstantie = InstantiatedAllies[index];
-            changeInstantie.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
 }

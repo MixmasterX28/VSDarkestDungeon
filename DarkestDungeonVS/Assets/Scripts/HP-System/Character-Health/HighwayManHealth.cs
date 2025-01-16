@@ -1,5 +1,10 @@
+using System;
+using UnityEngine;
+
+
 public class HighwayManHealth : HPSystem
 {
+
     void Start()
     {
         hp = 23;
