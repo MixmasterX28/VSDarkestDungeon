@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 public class SkeletonRabbleHPText : TestHPText
 {
+    [SerializeField] TMP_Text textField;
     // Start is called before the first frame update
     void Start()
     {
