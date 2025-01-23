@@ -2,9 +2,7 @@ public class PlagueDrBar : HealthBar
 {
     private void Start()
     {
-        slider.maxValue = bs.ExiastingAllies[3].GetComponent<PlagueDoctorHP>().hp;
-        slider.value = bs.ExiastingAllies[3].GetComponent<PlagueDoctorHP>().hp;
-        fill.color = gradient.Evaluate(slider.normalizedValue);
+        slider.maxValue = 22;
     }
 
     private void Update()

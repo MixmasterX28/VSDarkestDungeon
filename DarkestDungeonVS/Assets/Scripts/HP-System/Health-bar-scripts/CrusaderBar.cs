@@ -3,8 +3,6 @@ public class CrusaderBar : HealthBar
     private void Start()
     {
         slider.maxValue = 33;
-        slider.value = bs.ExiastingAllies[0].GetComponent<CrusaderHealth>().hp;
-        fill.color = gradient.Evaluate(slider.normalizedValue);
     }
 
     private void Update()
