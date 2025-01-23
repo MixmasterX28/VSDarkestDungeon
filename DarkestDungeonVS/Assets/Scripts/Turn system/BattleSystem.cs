@@ -10,6 +10,9 @@ public enum BattleState { START, ALLY1, ALLY2, ALLY3, ALLY4, ENEMY1, ENEMY2, ENE
 
 public class BattleSystem : MonoBehaviour
 {
+    public static event Action<BattleState> OnStateChange;
+
+
     public BattleState state;
 
     public static Action NextTurn;
@@ -40,6 +43,8 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
         state = BattleState.START;
+        OnStateChange?.Invoke(state);
+
         Debug.Log("Battle START!");
         triggerDamageScript = FindAnyObjectByType<TriggerDamageScript>();
         SpawnPrefabs();
@@ -68,6 +73,7 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.START)
         {
             StartCoroutine(DelayAndSwitchState());
+           
             return;
         }
 
@@ -159,6 +165,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         state = nextState;
+        OnStateChange?.Invoke(state);
 
         if (state.ToString().StartsWith("ENEMY"))
         {
@@ -236,6 +243,7 @@ public class BattleSystem : MonoBehaviour
         {
             GameObject entity = entities[index];
             entity.GetComponent<SpriteRenderer>().color = (state == currentState) ? Color.yellow : Color.white;
+            OnStateChange?.Invoke(state);
         }
     }
 
