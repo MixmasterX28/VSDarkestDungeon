@@ -1,9 +1,11 @@
+using System;
 using TMPro;
+using UnityEngine;
 
 public class VestalText : TestHPText
 {
 
-    // Start is called before the first frame update
+    [SerializeField] TMP_Text textField;
     void Start()
     {
 

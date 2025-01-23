@@ -25,6 +25,10 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] List<Vector2> SpawnPointAllies = new List<Vector2>();
     [SerializeField] List<Vector2> SpawnPointEnemies = new List<Vector2>();
 
+    [SerializeField] List<GameObject> BattleStateIndicators = new List<GameObject>();
+
+    [SerializeField] List<GameObject> UIHeroes = new List<GameObject>();
+
     public Color CurrentTurnColor = Color.yellow;
 
     [SerializeField] List<BattleState> visitedStates = new List<BattleState>();
@@ -53,10 +57,24 @@ public class BattleSystem : MonoBehaviour
                 Debug.LogError("TextField is not assigned! Ensure a TMP_Text component is named 'EndText' or assigned in the Inspector.");
             }
         }
+        // Ensure the indicators list is populated for each state
+        if (BattleStateIndicators.Count != Enum.GetValues(typeof(BattleState)).Length)
+        {
+            Debug.LogError("Ensure BattleStateIndicators list matches the number of BattleStates!");
+        }
+        // Ensure the UI part of the heroes to each state
+        if (UIHeroes.Count != Enum.GetValues(typeof(BattleState)).Length)
+        {
+            Debug.LogError("Ensure UIHeroes list matches the number of BattleStates!");
+        }
     }
 
     private void Update()
     {
+        UpdateHeroesUI();
+
+        UpdateIndicators();
+
         HighlightTurn(BattleState.ALLY1, 0, InstantiatedAllies);
         HighlightTurn(BattleState.ALLY2, 1, InstantiatedAllies);
         HighlightTurn(BattleState.ALLY3, 2, InstantiatedAllies);
@@ -97,7 +115,7 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleStateSwitch()
     {
-       
+
 
         // Proceed with the normal state switching
         if (!visitedStates.Contains(state))
@@ -116,7 +134,7 @@ public class BattleSystem : MonoBehaviour
         // If the current state is START, wait before moving to the next state
         if (state == BattleState.START)
         {
-            StartCoroutine(DelayAndSwitchState());
+            StartCoroutine(DelayAndSwitchState());  
             return;
         }
 
@@ -139,7 +157,6 @@ public class BattleSystem : MonoBehaviour
     {
         // Get count of active enemies
         int activeEnemiesCount = InstantiatedEnemies.FindAll(enemy => enemy != null && enemy.activeInHierarchy).Count;
-
         Debug.Log($"Active enemies remaining: {activeEnemiesCount}"); // Debug log
         return activeEnemiesCount == 0; // Return true if no active enemies
     }
@@ -201,7 +218,13 @@ public class BattleSystem : MonoBehaviour
 
         return false; // Default: Invalid state
     }
+    private List<GameObject> existingAllies = new List<GameObject>();
 
+    public List<GameObject> ExiastingAllies { get { return existingAllies; } }
+
+    private List<GameObject> existingEnemies = new List<GameObject>();
+
+    public List<GameObject> ExiastingEnemies { get { return existingEnemies; } }
 
     void SpawnPrefabs()
     {
@@ -209,6 +232,9 @@ public class BattleSystem : MonoBehaviour
         {
             Vector2 spawnPosition = SpawnPointAllies[i];
             GameObject newAlly = Instantiate(Allies[i], spawnPosition, Quaternion.identity);
+
+            existingAllies.Add(newAlly);
+
             var mouseClick = newAlly.GetComponent<MouseClick>();
             if (mouseClick != null)
             {
@@ -221,6 +247,10 @@ public class BattleSystem : MonoBehaviour
         {
             Vector2 spawnPosition = SpawnPointEnemies[i];
             GameObject newEnemy = Instantiate(Enemies[i], spawnPosition, Quaternion.identity);
+
+            existingEnemies.Add(newEnemy);
+
+
             var mouseClick = newEnemy.GetComponent<MouseClick>();
             if (mouseClick != null)
             {
@@ -289,5 +319,31 @@ public class BattleSystem : MonoBehaviour
 
         return null; // No valid allies left
     }
+    private void UpdateIndicators()
+    {
+        // Iterate through all indicators and update their appearance
+        for (int i = 0; i < BattleStateIndicators.Count; i++)
+        {
+            if (BattleStateIndicators[i] != null)
+            {
+                // Highlight the current state indicator, reset others
+                BattleStateIndicators[i].SetActive((BattleState)i == state);
+            }
+        }
+    }
 
+    private void UpdateHeroesUI()
+    {
+        for (int i = 0; i < UIHeroes.Count; i++)
+        {
+            if (state == BattleState.ENEMY2 || state == BattleState.ENEMY1 || state == BattleState.ENEMY3 || state == BattleState.START)
+            {
+                break;
+            }
+            if (UIHeroes[i] != null)
+            {
+                UIHeroes[i].SetActive((BattleState)i == state);
+            }
+        }
+    }
 }

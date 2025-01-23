@@ -1,19 +1,21 @@
 using UnityEngine;
+using System;
 
-public class HPSystem : MonoBehaviour 
+public class HPSystem : MonoBehaviour
 {
-    private int damage;
-    private float HP;
-  
+    private float _hp;  // Backing field
+
     public float hp
     {
-        get { return HP; }
-        set { HP = value; }
+        get => _hp;
+        set
+        {
+            _hp = Mathf.Max(0, value);  // Prevent HP from going below 0
+        }
     }
 
     public void Die()
     {
-            Destroy(gameObject);  // Destroys the object when HP reaches 0
-            HP = 0;
+        Destroy(gameObject);
     }
 }
