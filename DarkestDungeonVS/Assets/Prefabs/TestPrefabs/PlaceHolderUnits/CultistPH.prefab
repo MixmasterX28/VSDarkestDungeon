@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4141727381688487628}
   - component: {fileID: 254118579390652546}
   m_Layer: 0
-  m_Name: PH_cultist_witch_attack_ranged
+  m_Name: AttackSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,8 +118,8 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 139612808279125537}
-  - {fileID: 4756953417930708575}
   - {fileID: 4141727381688487628}
+  - {fileID: 4756953417930708575}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -354,7 +354,7 @@ GameObject:
   - component: {fileID: 139612808279125537}
   - component: {fileID: 3869854433011065769}
   m_Layer: 0
-  m_Name: PH_cultist_witch_idle
+  m_Name: DefaultSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseClick : MonoBehaviour
@@ -7,9 +8,12 @@ public class MouseClick : MonoBehaviour
     private State myState = State.Deactive;
 
     public System.Action OnMouseClickUsed; // Event to notify when the script is used
+    /* private BattleSystem battleSystem; */
 
     private void Start()
     {
+        /* battleSystem = FindAnyObjectByType<BattleSystem>(); */
+
         if (damageSystem == null)
         {
             damageSystem = GetComponent<DamageSystem>(); // Optional fallback
@@ -18,6 +22,8 @@ public class MouseClick : MonoBehaviour
 
     private void Update()
     {
+       /* SpriteAttackAllies(BattleState.ALLY1, 0, battlleSystem.InstantiatedAllies); */
+
         if (myState == State.Deactive)
         {
             GetComponent<Renderer>().material.color = Color.white; // Deactive state keeps the object color white
@@ -37,6 +43,36 @@ public class MouseClick : MonoBehaviour
             }
         }
     }
+
+  /* private void SpriteAttackAllies(BattleState currentState, int index, List<GameObject> entities)
+    {
+        if (index >= 0 && index < entities.Count && entities[index] != null)
+        {
+            GameObject entity = entities[index];
+
+            // Get all SpriteRenderer components in the entity and its children
+            SpriteRenderer[] spriteRenderers = entity.GetComponentsInChildren<SpriteRenderer>();
+
+            if (spriteRenderers.Length > 1) // Ensure there are multiple SpriteRenderers
+            {
+                SpriteRenderer defaultSprite = spriteRenderers[1]; // Assume first is default
+                SpriteRenderer attackSprite = spriteRenderers[2];  // Assume second is attack
+
+                if (battleSystem.state == currentState)
+                {
+                    // Enable the attack sprite and disable the default sprite
+                    defaultSprite.enabled = false;
+                    attackSprite.enabled = true;
+                }
+                else
+                {
+                    // Revert to default sprite
+                    defaultSprite.enabled = true;
+                    attackSprite.enabled = false;
+                }
+            }
+        }
+    } */
 
     private void OnMouseOver()
     {

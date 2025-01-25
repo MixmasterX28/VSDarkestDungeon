@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4811084205874681666}
   m_Layer: 0
   m_Name: PH_highwayman_attack_slice
-  m_TagString: Untagged
+  m_TagString: AnimAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

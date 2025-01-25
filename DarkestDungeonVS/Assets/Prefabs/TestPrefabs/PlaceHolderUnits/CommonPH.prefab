@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 157071280112894814}
   - component: {fileID: 7568273049953899324}
   m_Layer: 0
-  m_Name: PH_skeleton_common_idle
+  m_Name: DefaultSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 0813d91e7c2681640b09ea58001badf4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 4813414854991724494}
   - component: {fileID: 5202099061412305696}
   m_Layer: 0
-  m_Name: PH_skeleton_common_attack_melee
+  m_Name: AttackSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1566625998297400252}
   - component: {fileID: 6480881647565699305}
   m_Layer: 0
-  m_Name: PH_skeleton_militia_attack_melee
+  m_Name: AttackSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 7663914912997539379}
   - component: {fileID: 1359387660073281931}
   m_Layer: 0
-  m_Name: PH_skeleton_militia_idle
+  m_Name: DefaultSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -286,8 +286,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7663914912997539379}
-  - {fileID: 6025139675536174498}
   - {fileID: 1566625998297400252}
+  - {fileID: 6025139675536174498}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

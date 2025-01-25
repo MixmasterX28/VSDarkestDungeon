@@ -15,7 +15,7 @@ public class SoldierHealth : HPSystem
 
         if (DefendSpriteRenderer != null)
         {
-            DefendSpriteRenderer.enabled = false;
+            DefendSpriteRenderer.color = new Color(DefendSpriteRenderer.color.r, DefendSpriteRenderer.color.g, DefendSpriteRenderer.color.b, 0);
         }
     }
 
@@ -38,15 +38,15 @@ public class SoldierHealth : HPSystem
         // Enable the child SpriteRenderer and disable the parent
         if (DefendSpriteRenderer != null && IdleSpriteRenderer != null)
         {
-            DefendSpriteRenderer.enabled = true;
-            IdleSpriteRenderer.enabled = false;
+            IdleSpriteRenderer.color = new Color(IdleSpriteRenderer.color.r, IdleSpriteRenderer.color.g, IdleSpriteRenderer.color.b, 0); // Fully transparent
+            DefendSpriteRenderer.color = new Color(DefendSpriteRenderer.color.r, DefendSpriteRenderer.color.g, DefendSpriteRenderer.color.b, 1);   // Fully visible
 
             // Wait for 1 second
             yield return new WaitForSeconds(1f);
 
             // Revert to the parent sprite
-            DefendSpriteRenderer.enabled = false;
-            IdleSpriteRenderer.enabled = true;
+            IdleSpriteRenderer.color = new Color(IdleSpriteRenderer.color.r, IdleSpriteRenderer.color.g, IdleSpriteRenderer.color.b, 1); // Fully transparent
+            DefendSpriteRenderer.color = new Color(DefendSpriteRenderer.color.r, DefendSpriteRenderer.color.g, DefendSpriteRenderer.color.b, 0);   // Fully visible
         }
 
     }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -34,8 +35,6 @@ public class BattleSystem : MonoBehaviour
     public GameObject EndButtons;
 
 
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -57,13 +56,17 @@ public class BattleSystem : MonoBehaviour
 
     private void Update()
     {
-        HighlightTurn(BattleState.ALLY1, 0, InstantiatedAllies);
+       /* HighlightTurn(BattleState.ALLY1, 0, InstantiatedAllies);
         HighlightTurn(BattleState.ALLY2, 1, InstantiatedAllies);
         HighlightTurn(BattleState.ALLY3, 2, InstantiatedAllies);
         HighlightTurn(BattleState.ALLY4, 3, InstantiatedAllies);
         HighlightTurn(BattleState.ENEMY1, 0, InstantiatedEnemies);
         HighlightTurn(BattleState.ENEMY2, 1, InstantiatedEnemies);
-        HighlightTurn(BattleState.ENEMY3, 2, InstantiatedEnemies);
+        HighlightTurn(BattleState.ENEMY3, 2, InstantiatedEnemies); */
+
+        SpriteAttackEnemies(BattleState.ENEMY1, 0, InstantiatedEnemies);
+        SpriteAttackEnemies(BattleState.ENEMY2, 1, InstantiatedEnemies);
+        SpriteAttackEnemies(BattleState.ENEMY3, 2, InstantiatedEnemies); 
 
         if (state == BattleState.START)
         {
@@ -239,6 +242,69 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    /* private void SpriteAttackEnemies(BattleState currentState, int index, List<GameObject> entities)
+     {
+         if (index >= 0 && index < entities.Count && entities[index] != null)
+         {
+             GameObject entity = entities[index];
+
+             // Get all SpriteRenderer components in the entity and its children
+             SpriteRenderer[] spriteRenderers = entity.GetComponentsInChildren<SpriteRenderer>();
+
+             if (spriteRenderers.Length > 1) // Ensure there are multiple SpriteRenderers
+             {
+                 SpriteRenderer defaultSprite = spriteRenderers[1]; // Assume first is default
+                 SpriteRenderer attackSprite = spriteRenderers[2];  // Assume second is attack
+
+                 if (state == currentState)
+                 {
+                     // Enable the attack sprite and disable the default sprite
+                     defaultSprite.enabled = false;
+                     attackSprite.enabled = true;
+                 }
+                 else
+                 {
+                     // Revert to default sprite
+                     defaultSprite.enabled = true;
+                     attackSprite.enabled = false;
+                 }
+             }
+         } 
+     } */
+
+    private void SpriteAttackEnemies(BattleState currentState, int index, List<GameObject> entities)
+    {
+        if (index >= 0 && index < entities.Count && entities[index] != null)
+        {
+            GameObject entity = entities[index];
+
+            // Find SpriteRenderer components explicitly
+            SpriteRenderer defaultSprite = entity.transform.Find("DefaultSprite")?.GetComponent<SpriteRenderer>();
+            SpriteRenderer attackSprite = entity.transform.Find("AttackSprite")?.GetComponent<SpriteRenderer>();
+
+            if (defaultSprite != null && attackSprite != null)
+            {
+                if (state == currentState)
+                {
+                    // Enable the attack sprite and disable the default sprite
+                    defaultSprite.enabled = false;
+                    attackSprite.enabled = true;
+                }
+                else
+                {
+                    // Revert to default sprite
+                    defaultSprite.enabled = true;
+                    attackSprite.enabled = false;
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"SpriteRenderers not properly assigned for {entity.name}");
+            }
+        }
+    }
+
+
     private IEnumerator EnemyAttack()
     {
         yield return new WaitForSeconds(1.0f); // Simulate delay before the enemy attacks
@@ -261,6 +327,7 @@ public class BattleSystem : MonoBehaviour
                     if (damageSystem != null)
                     {
                         damageSystem.DamageTarget(targetAlly);
+                        
                         Debug.Log($"{activeEnemy.name} attacked {targetAlly.name}!");
                     }
                 }
