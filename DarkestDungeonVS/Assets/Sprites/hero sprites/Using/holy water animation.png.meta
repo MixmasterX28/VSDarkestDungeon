@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: eb477cc0fb4e71a4ab72e3102237ab38
+guid: 05a1aa20ef794f742b860afd22cf25a4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -108,7 +108,70 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: holy water animation_3
+      rect:
+        serializedVersion: 2
+        x: 1012
+        y: 755
+        width: 394
+        height: 325
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fb6faade825dda42b77ea3af12e22d1
+      internalID: 1138394275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holy water animation_2
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 889
+        width: 36
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00ac9a3b612931445bdd1325aa678bb8
+      internalID: -1143514491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holy water animation_1
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 594
+        width: 103
+        height: 239
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8fe0223db52f1e46847b404cfa5f5fc
+      internalID: -251425696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +182,10 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      holy water animation_1: -251425696
+      holy water animation_2: -1143514491
+      holy water animation_3: 1138394275
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
