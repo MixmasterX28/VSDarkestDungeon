@@ -5,8 +5,9 @@ public class HighwayManHealth : HPSystem
 {
     private int previousHp;
 
-    public SpriteRenderer IdleSpriteRenderer;
+    public GameObject IdleSpriteObject; // Changed from SpriteRenderer to GameObject
     public SpriteRenderer DefendSpriteRenderer;
+
     void Start()
     {
         hp = 23;
@@ -15,6 +16,11 @@ public class HighwayManHealth : HPSystem
         if (DefendSpriteRenderer != null)
         {
             DefendSpriteRenderer.enabled = false;
+        }
+
+        if (IdleSpriteObject != null)
+        {
+            IdleSpriteObject.SetActive(true); // Ensure the idle object is active initially
         }
     }
 
@@ -34,19 +40,18 @@ public class HighwayManHealth : HPSystem
 
     private IEnumerator SwitchSpritesTemporarily()
     {
-        // Enable the child SpriteRenderer and disable the parent
-        if (DefendSpriteRenderer != null && IdleSpriteRenderer != null)
+        // Enable the child SpriteRenderer and disable the parent object
+        if (DefendSpriteRenderer != null && IdleSpriteObject != null)
         {
             DefendSpriteRenderer.enabled = true;
-            IdleSpriteRenderer.enabled = false;
+            IdleSpriteObject.SetActive(false); // Disable the entire idle object
 
             // Wait for 1 second
             yield return new WaitForSeconds(1f);
 
-            // Revert to the parent sprite
+            // Revert to the parent object
             DefendSpriteRenderer.enabled = false;
-            IdleSpriteRenderer.enabled = true;
+            IdleSpriteObject.SetActive(true); // Re-enable the idle object
         }
-
     }
 }
