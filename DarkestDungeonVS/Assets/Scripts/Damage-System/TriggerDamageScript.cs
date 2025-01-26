@@ -8,6 +8,7 @@ public class TriggerDamageScript : MonoBehaviour
     private BattleSystem battleSystem;
     private bool damageModeActive = false; // Track if damage mode is active
 
+
     private void Start()
     {
         battleSystem = FindAnyObjectByType<BattleSystem>();
