@@ -56,13 +56,13 @@ public class BattleSystem : MonoBehaviour
 
     private void Update()
     {
-       /* HighlightTurn(BattleState.ALLY1, 0, InstantiatedAllies);
+        HighlightTurn(BattleState.ALLY1, 0, InstantiatedAllies);
         HighlightTurn(BattleState.ALLY2, 1, InstantiatedAllies);
         HighlightTurn(BattleState.ALLY3, 2, InstantiatedAllies);
         HighlightTurn(BattleState.ALLY4, 3, InstantiatedAllies);
         HighlightTurn(BattleState.ENEMY1, 0, InstantiatedEnemies);
         HighlightTurn(BattleState.ENEMY2, 1, InstantiatedEnemies);
-        HighlightTurn(BattleState.ENEMY3, 2, InstantiatedEnemies); */
+        HighlightTurn(BattleState.ENEMY3, 2, InstantiatedEnemies); 
 
         SpriteAttackEnemies(BattleState.ENEMY1, 0, InstantiatedEnemies);
         SpriteAttackEnemies(BattleState.ENEMY2, 1, InstantiatedEnemies);
