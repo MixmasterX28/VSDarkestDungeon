@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Unit
+  - AnimAttack
+  - AnimDefend
+  - AnimIdle
   layers:
   - Default
   - TransparentFX
