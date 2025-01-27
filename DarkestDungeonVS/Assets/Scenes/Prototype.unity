@@ -1352,6 +1352,26 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4573625487900598318, guid: 5361604f1bb59af45af0e673c6568024, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4573625487900598318, guid: 5361604f1bb59af45af0e673c6568024, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c8d9aaa5f4cd0a240b27a6f48dc9f43c, type: 3}
+    - target: {fileID: 4573625487900598318, guid: 5361604f1bb59af45af0e673c6568024, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4573625487900598318, guid: 5361604f1bb59af45af0e673c6568024, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4573625487900598318, guid: 5361604f1bb59af45af0e673c6568024, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4599369636513793131, guid: 5361604f1bb59af45af0e673c6568024, type: 3}
       propertyPath: m_Name
       value: HUD
@@ -3786,7 +3806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2452485811109111493, guid: c2e8bdf523bb9f64282df2a73f903527, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -257
+      value: 79
       objectReference: {fileID: 0}
     - target: {fileID: 2452485811109111493, guid: c2e8bdf523bb9f64282df2a73f903527, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
