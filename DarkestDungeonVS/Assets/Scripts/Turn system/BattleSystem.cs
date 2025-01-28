@@ -403,7 +403,7 @@ public class BattleSystem : MonoBehaviour
     {
         for (int i = 0; i < UIHeroes.Count; i++)
         {
-            if (state == BattleState.ENEMY2 || state == BattleState.ENEMY1 || state == BattleState.ENEMY3 || state == BattleState.START)
+            if (state == BattleState.ENEMY2 || state == BattleState.ENEMY1 || state == BattleState.ENEMY3 || state == BattleState.START || state == BattleState.WIN)
             {
                 break;
             }
