@@ -12,7 +12,7 @@ public class HighwayBar : HealthBar
         UpdateHealthBar();
         if (slider.value == 0)
         {
-            GoAway();
+            //GoAway();
         }
     }
 
